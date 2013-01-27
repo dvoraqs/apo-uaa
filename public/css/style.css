@@ -45,3 +45,11 @@ footer .container {
   background: url('../img/hero.jpg') no-repeat center #423732;
   color: #fff;
 }
+
+.side-kick {
+  padding: 30px 45px;
+}
+
+.side-kick h1 {
+  text-align: center;
+}
