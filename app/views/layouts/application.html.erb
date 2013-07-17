@@ -1,14 +1,71 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>RailsApp</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>
 
-<%= yield %>
+      <% $organization = 'Alpha Zeta Eta Chapter of Alpha Phi Omega' %>
+      <%= if @page != 'Home' then @page + ' - ' end %><%= $organization %>
 
-</body>
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="favicon.ico">
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            <!-- this could maybe be simplified by iterating through a list of the buttons or something -->
+            <% $active_li = raw '<li class="active">' %>
+            <% $inactive_li = raw '<li>' %>
+            <%= if @nav != 'Home' then $inactive_li else $active_li end %><%= link_to 'Alpha Zeta Eta', '/', :class => 'brand' %></li>
+            <%= if @nav != 'Events' then $inactive_li else $active_li end %><%= link_to 'Events', '/events/' %></li>
+            <%= if @nav != 'How to Join' then $inactive_li else $active_li end %><%= link_to 'Join', '/join' %></li>
+            <%= if @nav != 'About Us' then $inactive_li else $active_li end %><%= link_to 'About', '/about' %></li>
+            <%= if @nav != 'Contact Us' then $inactive_li else $active_li end %><%= link_to 'Contact', '/contact' %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div id="wrap">
+      <div class="container">
+
+        <% if @header != nil then %>
+        <div class="hero-unit side-kick">
+          <h1><%= @header %></h1>
+        </div>
+        <% end %>
+
+        <!-- v All Content Goes below Here v -->
+
+<%= yield =%>
+
+
+        <!-- ^ All Content Stays Above Here ^ -->
+
+      </div>
+      <div id="push"></div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p class="muted">
+          &copy; 
+          Alpha Zeta Eta Chapter in the University of Alaska Anchorage -
+          <a href="http://www.apo.org/">Alpha Phi Omega</a>, 
+          <a href="http://www.apor11.org/Region_XI_Home.html">Region 11</a>, 
+          <a href="http://www.facebook.com/pages/APO-Section-8/181858725172718">Section 8</a>. 
+          Last updated 2013-07-18.
+        </p>
+      </div>
+    </footer>
+
+  </body>
 </html>
