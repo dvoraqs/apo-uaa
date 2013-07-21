@@ -47,7 +47,7 @@
     </div>
     
     <div id="wrap">
-      <div class="container">
+      <div class="container" id="<%= @page.delete(' ') %>">
 
         <% if @header != nil then %>
         <div class="hero-unit side-kick">
@@ -55,12 +55,12 @@
         </div>
         <% end %>
 
-        <!-- v All Content Goes below Here v -->
+<!-- v All Content Goes below Here v -->
 
 <%= yield =%>
 
 
-        <!-- ^ All Content Stays Above Here ^ -->
+<!-- ^ All Content Stays Above Here ^ -->
 
       </div>
       <div id="push"></div>

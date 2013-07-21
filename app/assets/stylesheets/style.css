@@ -74,3 +74,28 @@ footer .container p {
 .side-kick h1 {
   text-align: center;
 }
+
+.section {
+  margin-left: 3em;
+}
+
+/* Makes it so that jumping to an id tag with links does not put the element 
+right at the top of the page, blocked by the fixed position nav bar */
+h2:before,
+#ChapterBylaws h3:before {
+  display: block; 
+  content: " "; 
+  margin-top: -60px; 
+  height: 60px; 
+  visibility: hidden; 
+}
+
+/* This is to stabilize the structure of the officer tables so the transition
+between tabs isn't so disorienting. The Height may need to be changed in the 
+future. Set it to the height of the tabs when the content is the tallest */
+#ContactUs .nav-tabs {
+  height: 347px;
+}
+#ContactUs .tab-content td {
+  width: 50%;
+}
