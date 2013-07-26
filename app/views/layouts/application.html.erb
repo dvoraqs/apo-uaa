@@ -38,6 +38,7 @@
             <% $inactive_li = raw '<li>' %>
             <%= if @nav != 'Home' then $inactive_li else $active_li end %><%= link_to 'Alpha Zeta Eta', '/', :class => 'brand' %></li>
             <%= if @nav != 'Events' then $inactive_li else $active_li end %><%= link_to 'Events', '/events/' %></li>
+            <%= if @nav != 'Media' then $inactive_li else $active_li end %><%= link_to 'Media', '/media/' %></li>
             <%= if @nav != 'How to Join' then $inactive_li else $active_li end %><%= link_to 'Join', '/join' %></li>
             <%= if @nav != 'About Us' then $inactive_li else $active_li end %><%= link_to 'About', '/about' %></li>
             <%= if @nav != 'Contact Us' then $inactive_li else $active_li end %><%= link_to 'Contact', '/contact' %></li>
@@ -70,11 +71,12 @@
       <div class="container">
         <p class="muted">
           &copy; 
-          Alpha Zeta Eta Chapter in the University of Alaska Anchorage -
+          Alpha Zeta Eta Chapter in the 
+          <a href="http://www.uaa.alaska.edu/">University of Alaska Anchorage</a> -
           <a href="http://www.apo.org/">Alpha Phi Omega</a>, 
           <a href="http://www.apor11.org/Region_XI_Home.html">Region 11</a>, 
           <a href="http://www.facebook.com/pages/APO-Section-8/181858725172718">Section 8</a>. 
-          Last updated 2013-07-18.
+          Last updated 2013-07-23.
         </p>
       </div>
     </footer>

@@ -16,16 +16,10 @@ class PagesController < ApplicationController
 
   def about
     @page = @nav = 'About Us'
-    @header = 'About the Fraternity'
+    @header = 'About our Organization'
   end
 
   def contact
     @page = @header = @nav = 'Contact Us'
-  end
-
-  def bylaws
-    @page = "Chapter Bylaws"
-    @header = "Alpha Zeta Eta Chapter Bylaws"
-    @nav = 'About Us'
   end
 end

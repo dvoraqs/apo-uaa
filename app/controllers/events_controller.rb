@@ -3,8 +3,9 @@
 class EventsController < ApplicationController
 
   def index
-    @page = @header = @nav = 'Events'
-    # @header = 'Events'
+    @page = @nav = 'Events'
+    @header = 'Upcoming Events'
+    @events = Event.order('start').all
   end
 
   def conference
