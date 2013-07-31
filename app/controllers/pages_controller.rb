@@ -22,4 +22,21 @@ class PagesController < ApplicationController
   def contact
     @page = @header = @nav = 'Contact Us'
   end
+
+  def conference
+    @page = @header = '2013 Section 8 Conference'
+    @nav = 'Events'
+  end
+
+  def register
+    @page = 'Register for the Conference'
+    @header = nil
+    @nav = 'Events'
+  end
+
+  def bylaws
+    @page = "Chapter Bylaws"
+    @header = "Alpha Zeta Eta Chapter Bylaws"
+    @nav = 'Media'
+  end
 end
