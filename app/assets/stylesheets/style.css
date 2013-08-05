@@ -50,7 +50,11 @@ footer .container p {
   text-align: center;
 }
 
-.section {
+.text-right {
+  text-align: right;
+}
+
+#ChapterBylaws .section {
   margin-left: 3em;
 }
 
@@ -74,35 +78,57 @@ future. Set it to the height of the tabs when the content is the tallest */
 #ContactUs .tab-content td {
   width: 50%;
 }
+#ContactUs ul.inline li {
+  padding: 0px 15px 8px 0;
+}
 
-.year {
+#Events .column-label {
+  position: relative;
+  top: -15px;
+  left: -35px;
+}
+
+#Events .year {
   height: 316px;
 }
 
-.month {
-  height: 159px;
+#Events .month {
+  height: 127px;
 }
 
-.date {
+#Events .date {
   /*height: 45px;*/
-}
-
-.end-date {
-  width: 46px;
+  width: 35px;
   text-align: center;
-  margin-top: 1em;
-  font-size: 20px;
-  /*font-weight: bo;*/
+  padding-bottom: 15px;
 }
 
-.end-date .day-of-week {
-  
-  margin: 0;
-  font-size: 15px;
-  
+#Events .day-of-week {
+  display: inline-block;
+  font-size: 0.5em; 
+  width: 100%;
+  /*text-align: center;*/
+  margin-top: 0.5em;
 }
 
-.year h2, .month h3 {
+#Events .end-date {
+  width: 35px;
+  text-align: center;
+  margin-top: .5em;
+  font-size: 18px;
+}
+
+#Events .end-date .day-of-week {
+  margin: -25px 0 0 0;
+  font-size: 12px;
+}
+
+#Events .end-date small {
+  font-size: 12px;
+}
+
+#Events .year h2, 
+#Events .month h3 {
   text-align: right;
   position: relative; 
   -webkit-transform: rotate(270deg); 
@@ -110,48 +136,58 @@ future. Set it to the height of the tabs when the content is the tallest */
   -o-transform: rotate(270deg); 
 }
 
-.year h2 {
+#Events .year h2 {
   width: 316px;
   font-size: 7em;
   color: #D9D9D9;
-  left: -150px; 
+  left: -135px; 
   top: 130px;
   letter-spacing: .25em;
 }
 
-.month h3 {
+#Events .month h3 {
   width: 159px;
-  font-size: 5em; 
+  font-size: 4em; 
   color: #999999;
-  left: -12px; 
+  left: -5px; 
   top: 50px;
 }
 
-.date h4 {
-  font-size: 3em;
+#Events .date h4 {
+  font-size: 2em;
   color: #1B1B1B;
   position: relative;
   left: 55px;
+  top: -8px;
 }
 
-.day-of-week {
-  display: inline-block;
-  font-size: 0.5em; 
-  width: 46px;
-  text-align: center;
-  margin-top: 0.5em;
+#Events h5 {
+  font-size: 16px;
 }
 
-.events a {
+#Events .span11 .nav-list {
+  margin-left: 32px;
+}
+
+#Events .events a {
   margin: 0 -15px;
   padding: 0 15px;
   display: inline-block;
   position: relative; 
   top: -10px;
+  width: 100%;
 }
 
-.events a:hover {
+#Events .events a:hover {
   background-color: #EEEEEE;
+}
+
+#Events a .data {
+  margin-top: 10px;
+}
+
+#Events a .summary {
+  margin-bottom: 10px;
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */
@@ -172,11 +208,14 @@ future. Set it to the height of the tabs when the content is the tallest */
     padding-right: 8%;
   }
 
-  .year, .month {
+  #Events .year, 
+  #Events .month {
     height: auto;
   }
 
-  .year h2, .month h3, .date h4{
+  #Events .year h2, 
+  #Events .month h3, 
+  #Events .date h4 {
     font-size: 40px;
     line-height: 40px;
     left: 0px;
@@ -186,7 +225,6 @@ future. Set it to the height of the tabs when the content is the tallest */
     -webkit-transform: rotate(0deg); 
     -moz-transform: rotate(0deg); 
     -o-transform: rotate(0deg); 
-
   }
 }
 

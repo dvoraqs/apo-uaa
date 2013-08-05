@@ -1,0 +1,62 @@
+<%= params %>
+
+<%
+  # Initialize the Google Calendar API Client
+  require 'google/api_client'
+  client = Google::APIClient.new
+
+  account_email = '457506245360@developer.gserviceaccount.com' 
+  key_file = '5eb6cf56fe5121f798247b8bf97bdfea193886d0-privatekey.p12' 
+  key_secret = 'notasecret' 
+  client = Google::APIClient.new()
+
+  key = Google::APIClient::KeyUtils.load_from_pkcs12(key_file, key_secret)
+
+  client.authorization = Signet::OAuth2::Client.new(
+    :token_credential_uri => 'https://accounts.google.com/o/oauth2/token',
+    :audience => 'https://accounts.google.com/o/oauth2/token',
+    :scope => 'https://www.googleapis.com/auth/calendar',
+    :issuer => account_email,
+    :signing_key => key)
+
+  # Request a token for our service account
+  client.authorization.fetch_access_token!
+  service = client.discovered_api('calendar', 'v3')
+%>
+
+<% 
+page_token = nil
+result = client.execute(:api_method => service.events.list,
+                        :parameters => {'calendarId' => 'apo.uaa@gmail.com'})
+while true
+  events = result.data.items
+  events.each do |e| 
+  
+
+    # new_event = Event.new
+    # new_event.name = e.summary
+    # new_event.start = if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end
+    # new_event.end = if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end
+    # new_event.location = e.location
+    # new_event.status = e.status
+    # new_event.summary = e.description
+    # new_event.save
+
+%>
+
+<!-- Name: <%= e.summary %><br>
+Start: <%= if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end %><br>
+End: <%= if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end %><br>
+Location: <%= e.location %><br>
+Status: <%= e.status %><br>
+Summary: <%= e.description %><br><br> -->
+
+<% end
+  if !(page_token = result.data.next_page_token)
+    break
+  end
+  result = client.execute(:api_method => service.events.list,
+                          :parameters => {'calendarId' => 'apo.uaa@gmail.com',
+                                          'pageToken' => page_token})
+end
+%>

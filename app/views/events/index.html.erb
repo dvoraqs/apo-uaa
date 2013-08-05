@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="span4">
     <p class="lead">
       At this stage of development, we don't have a custom interface for interacting with Alpha Zeta Eta's event calendar. Until that's finished, here is a link to the Google Calendar page:
@@ -22,32 +22,35 @@
     </ul>
     <p><a class="btn" href="/conference">View details &raquo;</a></p>
   </div>
+</div> -->
+
+<!-- <span style="font-size:4em; font-weight:bold; line-height:normal;">MAR</span> -->
+
+<br><ul class="nav nav-list">
+  <li class="divider"></li>
+</ul><br>
+
+<div class="row">
+  <div class="span4">
+    <a href="/" class="btn">Previous</a>
+  </div>
+  <div class="span4 text-center">
+    <%= link_to "Create New Event", new_event_path, :class => "btn btn-primary" %>
+  </div>
+  <div class="span4 text-right">
+    <a href="/" class="btn">Next</a>
+  </div>
 </div>
-
-<!-- <span style="font-size:7em; font-weight:bold; line-height:normal; letter-spacing: .25em">8888</span> -->
-<br><ul class="nav nav-list">
-  <li class="divider"></li>
-</ul><br>
-
-<%= @events %><br>
-
-
-<br><ul class="nav nav-list">
-  <li class="divider"></li>
-</ul><br>
-
-<%= link_to "Create New Event", new_event_path %><br>
-
-<br><ul class="nav nav-list">
-  <li class="divider"></li>
-</ul><br>
 
 <% 
   # this seems like a sucky way to do this, so changes that simplify are welcome
 
-  # while i < @events.length do
   for i in 0...@events.length
     event = @events[i]
+    # we need access to the event before and after the current one in each
+    # step, so I'm doing iteration by index here. A better way to access them
+    # and their dates in the different forms needed would make the code a lot 
+    # cleaner
 
     event_start = DateTime.parse(event.start)
     event_end = DateTime.parse(event.end)
@@ -55,6 +58,10 @@
     month = event_start.strftime('%^b')
     day = event_start.strftime('%d')
     weekday = event_start.strftime('%^a')
+
+    if event_end.strftime('%l:%M%P') == '12:00am'
+      event_end = event_end.advance(:seconds => -1)
+    end
 
     prev_event = @events[i-1]
     prev_event_start = DateTime.parse(prev_event.start)
@@ -71,21 +78,59 @@
     end
 
     if event_start.strftime('%M') == '00'
-      start_clock = event_start.strftime('%l %p')
+      start_clock = event_start.strftime('%l%P')
     else
-      start_clock = event_start.strftime('%l:%M %p')
+      start_clock = event_start.strftime('%l:%M%P')
     end
 
     if event_end.strftime('%M') == '00'
-      end_clock = event_end.strftime('%l %p')
+      end_clock = event_end.strftime('%l%P')
     else
-      end_clock = event_end.strftime('%l:%M %p')
+      end_clock = event_end.strftime('%l:%M%P')
     end
+
+    start_day = end_day = ''
+    if event_end > event_start.advance(:days => 1)
+      if event_end < event_start.advance(:days => 7)
+        start_day = event_start.strftime('%a ')
+        end_day = event_end.strftime('%a ')
+      else
+        start_day = event_start.strftime('%m/%d ')
+        end_day = event_end.strftime('%m/%d ')
+      end
+    end
+
+    if !(start_clock == '12am' && end_clock == '11:59pm')
+      time = start_day + start_clock + ' - ' + end_day + end_clock
+    elsif start_day != end_day
+      time = start_day + ' - ' + end_day
+    else
+      time = 'All day'
+    end
+
+
     # duration = end_clock - start_clock
 %>
 
 <% if prev_year != year || prev_event_start > event_start %>
+
 <!-- Begin Year -->
+<br><ul class="nav nav-list">
+  <li class="divider"></li>
+</ul><br>
+
+<div class="row">
+  <div class="span4 offset4 column-label">
+    <small>Event:</small>
+  </div>
+  <div class="span2 column-label">
+    <small>Time:</small>
+  </div>
+  <div class="span2 column-label">
+    <small>Place:</small>
+  </div>
+</div>
+
 <div class="row">
   <div class="span1 year">
     <h2><%= year %></h2>
@@ -94,7 +139,27 @@
 <% end %>
 
     <% if prev_month != year+month %>
+
     <!-- Begin Month -->
+    <% if prev_year == year %>
+    <ul class="nav nav-list">
+      <li class="divider"></li>
+    </ul><br>
+
+    <div class="row">
+      <div class="span4 offset3 column-label">
+        <small>Event:</small>
+      </div>
+      <div class="span2 column-label">
+        <small>Time:</small>
+      </div>
+      <div class="span2 column-label">
+        <small>Place:</small>
+      </div>
+    </div>
+
+    <% end %>
+
     <div class="row">
       <div class="span1 month">
         <h3><%= month %></h3>
@@ -122,19 +187,28 @@
 
             <!-- Begin Event -->
             <a href="<%= event_path(event) %>">
-              <h5><%= event.name %></h5>
               <div class="row">
-                <div class="span2">
-                  <p>
-                    <%= start_clock %> - <%= end_clock %><br>
-                    <%= event.location %><br>
-                    <%= event.status %>
-                  </p>
+                <div class="span4 title">
+                  <h5><%= event.name %></h5>
                 </div>
-                <div class="span6">
-                  <p><%= event.summary %></p>
+                <div class="span2">
+                  <div class="data">
+                    <!-- <small>Time:</small> -->
+                    <%= time %>
+                  </div>
+                </div>
+                <div class="span2">
+                  <div class="data">
+                    <!-- <small>Location:</small> -->
+                    <%= event.location %>
+                  </div>
                 </div>
               </div>
+              <% if event.summary != nil %>
+              <div class="summary">
+                <%= event.summary %>
+              </div>
+              <% end %>
             </a>
             <!-- End Event -->
 
@@ -161,3 +235,9 @@
 <!-- <%= event_end %> -->
 
 <% end %> 
+
+<% if @events.length < 1 %>
+<div class="lead text-center">
+  There are no events to display
+</div>
+<% end %>
