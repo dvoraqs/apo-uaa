@@ -1,10 +1,15 @@
 class Event < ActiveRecord::Base
   attr_accessible :name, :start, :end, :location, :status, :summary
 
+  before_save do |e|
+  	if e.summary == ''
+  	  e.summary = nil
+  	end
+  end
+
   def more_than_a_day
   	self.start_date.advance(:days => 1) < self.end_date
   end
-
 
   def start_date
   	DateTime.parse(self[:start])

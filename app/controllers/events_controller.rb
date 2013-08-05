@@ -8,8 +8,19 @@ class EventsController < ApplicationController
   def index
     # display a list of events
     @page = 'Events'
-    @header = 'Upcoming Events'
-    @events = Event.order('start').all
+    
+
+    @time = if params['time'] == nil then 0 else params['time'].to_i end
+    now = DateTime.now
+    range_start = now.advance(:months => @time * 6)
+    range_end = now.advance(:months => (@time + 1) * 6)
+    @events = Event.order('start').where('end > ? and ? > start', range_start, range_end).all
+    
+    if @time == 0
+      @header = "Upcoming Events"
+    else
+      @header = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
+    end
   end
 
   def show

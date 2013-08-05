@@ -26,19 +26,23 @@
 
 <!-- <span style="font-size:4em; font-weight:bold; line-height:normal;">MAR</span> -->
 
-<br><ul class="nav nav-list">
-  <li class="divider"></li>
-</ul><br>
-
 <div class="row">
   <div class="span4">
-    <a href="/" class="btn">Previous</a>
+    <a href="?time=<%= @time - 1 %>" class="btn">
+      <i class="icon-arrow-left"></i>
+      Previous 6 Months</a>
   </div>
   <div class="span4 text-center">
-    <%= link_to "Create New Event", new_event_path, :class => "btn btn-primary" %>
+    <a href="<%= new_event_path %>" class="btn btn-primary">
+      <i class="icon-pencil icon-white"></i>
+      Create New Event
+    </a>
   </div>
   <div class="span4 text-right">
-    <a href="/" class="btn">Next</a>
+    <a href="?time=<%= @time + 1 %>" class="btn">
+      Next 6 Months
+      <i class="icon-arrow-right"></i>
+    </a>
   </div>
 </div>
 
@@ -47,11 +51,9 @@
     event = @events[i]
     prev_event = @events[i-1]
     next_event = @events[i+1]
-
-    # duration = end_clock - start_clock
 %>
 
-<% if prev_event.start_year != event.start_year || prev_event.start_date > event.start_date %>
+<% if prev_event.start_year != event.start_year || prev_event.start_date > event.start_date || i == 0 %>
 
 <!-- Begin Year -->
 <br><ul class="nav nav-list">
@@ -77,11 +79,11 @@
   <div class="span11">
 <% end %>
 
-    <% if prev_event.start_year + prev_event.start_month_caps != event.start_year + event.start_month_caps %>
+    <% if prev_event.start_year + prev_event.start_month_caps != event.start_year + event.start_month_caps || i == 0 %>
 
 
     <!-- Begin Month -->
-      <% if prev_event.start_year == event.start_year %>
+    <% if prev_event.start_year == event.start_year && i != 0 %>
     <ul class="nav nav-list">
       <li class="divider"></li>
     </ul><br>
@@ -98,7 +100,7 @@
       </div>
     </div>
 
-      <% end %>
+    <% end %>
 
     <div class="row">
       <div class="span1 month">
@@ -107,7 +109,7 @@
       <div class="span10">
     <% end %>
 
-        <% if prev_event.start_year + prev_event.start_month_caps + prev_event.start_day != event.start_year + event.start_month_caps + event.start_day %>
+        <% if prev_event.start_year + prev_event.start_month_caps + prev_event.start_day != event.start_year + event.start_month_caps + event.start_day || prev_event.end_year + prev_event.end_month_caps + prev_event.end_day != event.end_year + event.end_month_caps + event.end_day || i == 0 %>
         <!-- Begin Day -->
         <div class="row">
           <div class="span1 date">
@@ -152,7 +154,7 @@
             </a>
             <!-- End Event -->
 
-        <% if next_event.nil? || next_event.start_year + next_event.start_month_caps + next_event.start_day != event.start_year + event.start_month_caps + event.start_day %>
+        <% if next_event.nil? || next_event.start_year + next_event.start_month_caps + next_event.start_day != event.start_year + event.start_month_caps + event.start_day || next_event.end_year + next_event.end_month_caps + next_event.end_day != event.end_year + event.end_month_caps + event.end_day %>
           </div>
         </div>
         <!-- End Day -->
@@ -173,6 +175,10 @@
 <% end %> 
 
 <% if @events.length < 1 %>
+<br><ul class="nav nav-list">
+  <li class="divider"></li>
+</ul><br>
+
 <div class="lead text-center">
   There are no events to display
 </div>

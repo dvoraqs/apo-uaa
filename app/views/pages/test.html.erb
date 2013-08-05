@@ -33,14 +33,14 @@ while true
   events.each do |e| 
   
 
-    # new_event = Event.new
-    # new_event.name = e.summary
-    # new_event.start = if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end
-    # new_event.end = if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end
-    # new_event.location = e.location
-    # new_event.status = e.status
-    # new_event.summary = e.description
-    # new_event.save
+    new_event = Event.new
+    new_event.name = e.summary
+    new_event.start = if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end
+    new_event.end = if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end
+    new_event.location = e.location
+    new_event.status = e.status
+    new_event.summary = e.description
+    new_event.save
 
 %>
 

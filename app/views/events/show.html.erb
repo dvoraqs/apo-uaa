@@ -1,10 +1,10 @@
 
 <div class="row">
 	<div class="span2 offset4 text-center">
-		<%= link_to "Edit Event", edit_event_path(@event), :class => "btn btn-primary" %>
+		<%= link_to raw('<i class="icon-edit icon-white"></i> Edit Event'), edit_event_path(@event), :class => "btn btn-primary" %>
 	</div>
 	<div class="span2 text-center">
-		<%= link_to 'Delete Event', event_path(@event), :class => "btn btn-danger", :confirm => 'Are you sure you want to destroy this event?', :method => :delete %>
+		<%= link_to raw('<i class="icon-trash icon-white"></i> Delete Event'), event_path(@event), :class => "btn btn-danger", :confirm => 'Are you sure you want to destroy this event?', :method => :delete %>
 	</div>
 </div>
 
