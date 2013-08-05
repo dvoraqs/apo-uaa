@@ -43,76 +43,15 @@
 </div>
 
 <% 
-  # this seems like a sucky way to do this, so changes that simplify are welcome
-
   for i in 0...@events.length
     event = @events[i]
-    # we need access to the event before and after the current one in each
-    # step, so I'm doing iteration by index here. A better way to access them
-    # and their dates in the different forms needed would make the code a lot 
-    # cleaner
-
-    event_start = DateTime.parse(event.start)
-    event_end = DateTime.parse(event.end)
-    year = event_start.strftime('%Y')
-    month = event_start.strftime('%^b')
-    day = event_start.strftime('%d')
-    weekday = event_start.strftime('%^a')
-
-    if event_end.strftime('%l:%M%P') == '12:00am'
-      event_end = event_end.advance(:seconds => -1)
-    end
-
     prev_event = @events[i-1]
-    prev_event_start = DateTime.parse(prev_event.start)
-    prev_year = prev_event_start.strftime('%Y')
-    prev_month = prev_event_start.strftime('%Y%^b')
-    prev_day = prev_event_start.strftime('%Y%^b%d')
-
     next_event = @events[i+1]
-    if next_event != nil
-      next_event_start = DateTime.parse(next_event.start)
-      next_year = next_event_start.strftime('%Y')
-      next_month = next_event_start.strftime('%Y%^b')
-      next_day = next_event_start.strftime('%Y%^b%d')
-    end
-
-    if event_start.strftime('%M') == '00'
-      start_clock = event_start.strftime('%l%P')
-    else
-      start_clock = event_start.strftime('%l:%M%P')
-    end
-
-    if event_end.strftime('%M') == '00'
-      end_clock = event_end.strftime('%l%P')
-    else
-      end_clock = event_end.strftime('%l:%M%P')
-    end
-
-    start_day = end_day = ''
-    if event_end > event_start.advance(:days => 1)
-      if event_end < event_start.advance(:days => 7)
-        start_day = event_start.strftime('%a ')
-        end_day = event_end.strftime('%a ')
-      else
-        start_day = event_start.strftime('%m/%d ')
-        end_day = event_end.strftime('%m/%d ')
-      end
-    end
-
-    if !(start_clock == '12am' && end_clock == '11:59pm')
-      time = start_day + start_clock + ' - ' + end_day + end_clock
-    elsif start_day != end_day
-      time = start_day + ' - ' + end_day
-    else
-      time = 'All day'
-    end
-
 
     # duration = end_clock - start_clock
 %>
 
-<% if prev_year != year || prev_event_start > event_start %>
+<% if prev_event.start_year != event.start_year || prev_event.start_date > event.start_date %>
 
 <!-- Begin Year -->
 <br><ul class="nav nav-list">
@@ -133,15 +72,16 @@
 
 <div class="row">
   <div class="span1 year">
-    <h2><%= year %></h2>
+    <h2><%= event.start_year %></h2>
   </div>
   <div class="span11">
 <% end %>
 
-    <% if prev_month != year+month %>
+    <% if prev_event.start_year + prev_event.start_month_caps != event.start_year + event.start_month_caps %>
+
 
     <!-- Begin Month -->
-    <% if prev_year == year %>
+      <% if prev_event.start_year == event.start_year %>
     <ul class="nav nav-list">
       <li class="divider"></li>
     </ul><br>
@@ -158,26 +98,26 @@
       </div>
     </div>
 
-    <% end %>
+      <% end %>
 
     <div class="row">
       <div class="span1 month">
-        <h3><%= month %></h3>
+        <h3><%= event.start_month_caps %></h3>
       </div>
       <div class="span10">
     <% end %>
 
-        <% if prev_day != year+month+day %>
+        <% if prev_event.start_year + prev_event.start_month_caps + prev_event.start_day != event.start_year + event.start_month_caps + event.start_day %>
         <!-- Begin Day -->
         <div class="row">
           <div class="span1 date">
             <h4>
-              <%= day %> <div class="day-of-week"><%= weekday %></div>
-              <% if event_end > event_start.advance(:days => 1) %>
+              <%= event.start_day %> <div class="day-of-week"><%= event.start_weekday_caps %></div>
+              <% if event.more_than_a_day %>
               <div class="end-date">
                 <small>to</small>
-                <%= event_end.strftime('%d') %> 
-                <div class="day-of-week"><%= event_end.strftime('%^a') %></div>
+                <%= event.end_day %> 
+                <div class="day-of-week"><%= event.end_weekday_caps %></div>
               </div>
               <% end %>
             </h4>
@@ -194,7 +134,7 @@
                 <div class="span2">
                   <div class="data">
                     <!-- <small>Time:</small> -->
-                    <%= time %>
+                    <%= event.time %>
                   </div>
                 </div>
                 <div class="span2">
@@ -212,27 +152,23 @@
             </a>
             <!-- End Event -->
 
-        <% if next_event.nil? || next_day != year+month+day %>
+        <% if next_event.nil? || next_event.start_year + next_event.start_month_caps + next_event.start_day != event.start_year + event.start_month_caps + event.start_day %>
           </div>
         </div>
         <!-- End Day -->
         <% end %>
 
-    <% if next_event.nil? || next_month != year+month %>
+    <% if next_event.nil? || next_event.start_year + next_event.start_month_caps != event.start_year + event.start_month_caps %>
       </div>
     </div>
     <!-- End Month -->
     <% end %>
 
-<% if next_event.nil? || next_year != year %>
+<% if next_event.nil? || next_event.start_year != event.start_year %>
   </div>
 </div>
 <!-- End Year -->
 <% end %>
-
-<!-- <%= event_start.advance(:days => 1) %> -->
-
-<!-- <%= event_end %> -->
 
 <% end %> 
 

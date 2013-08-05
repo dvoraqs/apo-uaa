@@ -1,6 +1,11 @@
 class Event < ActiveRecord::Base
   attr_accessible :name, :start, :end, :location, :status, :summary
 
+  def more_than_a_day
+  	self.start_date.advance(:days => 1) < self.end_date
+  end
+
+
   def start_date
   	DateTime.parse(self[:start])
   end
@@ -30,21 +35,23 @@ class Event < ActiveRecord::Base
   end
 
   def start_time
-  	self.start_date.strftime('%l%P')
-  end
-
-  def start_time_long
-  	self.start_date.strftime('%l:%M%P')
-  end
-
-  def start_minute
-  	self.start_date.strftime('%M')
+  	if self.start_date.strftime('%M') == '00'
+      self.start_date.strftime('%l%P')
+    else
+      self.start_date.strftime('%l:%M%P')
+    end
   end
 
   # all of the same for the end date
 
   def end_date
-  	DateTime.parse(self[:end])
+  	# rewrite 12:00am end dates to fall inside the end of the previous day
+  	date = DateTime.parse(self[:end])
+  	if date.strftime('%l:%M%P') != '12:00am'
+      date
+    else
+      date.advance(:seconds => -1)
+    end
   end
 
   def end_date_short
@@ -72,14 +79,32 @@ class Event < ActiveRecord::Base
   end
 
   def end_time
-  	self.end_date.strftime('%l%P')
+  	# rewrite 12:00am end dates to fall inside the end of the previous day
+  	if self.end_date.strftime('%M') == '00'
+      self.end_date.strftime('%l%P')
+    else
+      self.end_date.strftime('%l:%M%P')
+    end
   end
 
-  def end_time_long
-  	self.end_date.strftime('%l:%M%P')
-  end
+  def time
+    start_day = end_day = ''
+    if self.end_date > self.start_date.advance(:days => 1)
+      if self.end_date < self.start_date.advance(:days => 7)
+        start_day = self.start_weekday + ' '
+        end_day = self.end_weekday + ' '
+      else
+        start_day = self.start_date_short + ' '
+        end_day = self.start_date_short + ' '
+      end
+    end
 
-  def end_minute
-  	self.end_date.strftime('%M')
+    if !(self.start_time == '12am' && self.end_time == '11:59pm')
+      start_day + self.start_time + ' - ' + end_day + self.end_time
+    elsif start_day != end_day
+      start_day + ' - ' + end_day
+    else
+      'All day'
+    end
   end
 end

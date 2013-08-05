@@ -14,6 +14,12 @@ class PagesController < ApplicationController
     @header = 'How to Join our Chapter'
   end
 
+  def pledge_signup
+    @nav = 'How to Join'
+    @page = 'Sign up as a potential pledge'
+    @header = nil
+  end
+
   def about
     @page = @nav = 'About Us'
     @header = 'About our Organization'
@@ -28,7 +34,7 @@ class PagesController < ApplicationController
     @nav = 'Events'
   end
 
-  def register
+  def conference_register
     @page = 'Register for the Conference'
     @header = nil
     @nav = 'Events'
@@ -38,5 +44,10 @@ class PagesController < ApplicationController
     @page = "Chapter Bylaws"
     @header = "Alpha Zeta Eta Chapter Bylaws"
     @nav = 'Media'
+  end
+
+  def test
+    @nav = 'Home'
+    @page = @header = 'Test Page'
   end
 end
