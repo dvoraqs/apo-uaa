@@ -1,0 +1,11 @@
+<h2>Enter new event information:</h2>
+
+<%= form_for @event do |f| %>
+  <%= f.label :title %><%= f.text_field :title %><br>
+  <%= f.label :start %><%= f.text_field :start %><br>
+  <%= f.label :end %><%= f.text_field :end %><br>
+  <%= f.label :location %><%= f.text_field :location %><br>
+  <%= f.label :status %><%= f.text_field :status %><br>
+  <%= f.label :description %><%= f.text_area :description, :size => "60x12" %><br>
+  <%= submit_tag %>
+<% end %>

@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="span6 offset3">
+    <h2>Edit event information:</h2>
+
+    <% fields = [:title, :start, :end, :location, :status, :description] %>
+
+    <%= form_for @event, :html => {:class => "form-horizontal"} do |f| %>
+      <% fields.each do |field| %>
+      <div class="control-group">
+      <%= f.label field, :class => "control-label" %>
+        <div class="control">
+          <%= f.text_field field %>
+        </div>
+      </div>
+      <% end %>
+
+      <div class="control-group">
+        <div class="control">
+          <%= submit_tag "Save Changes", :class => "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

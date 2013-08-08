@@ -1,0 +1,235 @@
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+  /*padding-top: 60px;*/
+}
+
+/* Set the fixed height of the footer here */
+#push,
+footer {
+  height: 60px;
+}
+footer {
+  background-color: #f5f5f5;
+}
+
+#wrap .container {
+  padding: 60px 0 20px 0;
+}
+
+footer .container {
+  padding-top: 20px;
+}
+
+footer .container p {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.main-hero {
+  background: url('/assets/hero.jpg') no-repeat center #423732;
+  color: #fff;
+}
+
+.side-kick {
+  padding: 30px 0;
+}
+
+.text-center,
+.side-kick h1 {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+#ChapterBylaws .section {
+  margin-left: 3em;
+}
+
+/* Makes it so that jumping to an id tag with links does not put the element 
+right at the top of the page, blocked by the fixed position nav bar */
+h2:before,
+#ChapterBylaws h3:before {
+  display: block; 
+  content: " "; 
+  margin-top: -60px; 
+  height: 60px; 
+  visibility: hidden; 
+}
+
+/* This is to stabilize the structure of the officer tables so the transition
+between tabs isn't so disorienting. The Height may need to be changed in the 
+future. Set it to the height of the tabs when the content is the tallest */
+#ContactUs .nav-tabs {
+  height: 347px;
+}
+#ContactUs .tab-content td {
+  width: 50%;
+}
+#ContactUs ul.inline li {
+  padding: 0px 15px 8px 0;
+}
+
+#Events .column-label {
+  position: relative;
+  top: -15px;
+  left: -35px;
+}
+
+#Events .year {
+  height: 316px;
+}
+
+#Events .month {
+  height: 127px;
+}
+
+#Events .date {
+  /*height: 45px;*/
+  width: 35px;
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+#Events .day-of-week {
+  display: inline-block;
+  font-size: 0.5em; 
+  width: 100%;
+  /*text-align: center;*/
+  margin-top: 0.5em;
+}
+
+#Events .end-date {
+  width: 35px;
+  text-align: center;
+  margin-top: .5em;
+  font-size: 18px;
+}
+
+#Events .end-date .day-of-week {
+  margin: -25px 0 0 0;
+  font-size: 12px;
+}
+
+#Events .end-date small {
+  font-size: 12px;
+}
+
+#Events .year h2, 
+#Events .month h3 {
+  text-align: right;
+  position: relative; 
+  -webkit-transform: rotate(270deg); 
+  -moz-transform: rotate(270deg); 
+  -o-transform: rotate(270deg); 
+}
+
+#Events .year h2 {
+  width: 316px;
+  font-size: 7em;
+  color: #D9D9D9;
+  left: -135px; 
+  top: 130px;
+  letter-spacing: .25em;
+}
+
+#Events .month h3 {
+  width: 159px;
+  font-size: 4em; 
+  color: #999999;
+  left: -5px; 
+  top: 50px;
+}
+
+#Events .date h4 {
+  font-size: 2em;
+  color: #1B1B1B;
+  position: relative;
+  left: 55px;
+  top: -8px;
+}
+
+#Events h5 {
+  font-size: 16px;
+}
+
+#Events .span11 .nav-list {
+  margin-left: 32px;
+}
+
+#Events .events a {
+  margin: 0 -15px;
+  padding: 0 15px;
+  display: inline-block;
+  position: relative; 
+  top: -10px;
+  width: 100%;
+}
+
+#Events .events a:hover {
+  background-color: #EEEEEE;
+}
+
+#Events a .data {
+  margin-top: 10px;
+}
+
+#Events a .summary {
+  margin-bottom: 10px;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+  footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  h1 {
+    font-size: 45px !important;
+  }
+
+  .hero-unit {
+    padding-left: 8%;
+    padding-right: 8%;
+  }
+
+  #Events .year, 
+  #Events .month {
+    height: auto;
+  }
+
+  #Events .year h2, 
+  #Events .month h3, 
+  #Events .date h4 {
+    font-size: 40px;
+    line-height: 40px;
+    left: 0px;
+    top: 0px;
+    width: auto;
+    text-align: left;
+    -webkit-transform: rotate(0deg); 
+    -moz-transform: rotate(0deg); 
+    -o-transform: rotate(0deg); 
+  }
+}
+
+@media (max-width: 979px) {
+  #wrap .container {
+    padding: 0 0 20px 0;
+  }
+}

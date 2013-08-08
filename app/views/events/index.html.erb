@@ -1,0 +1,193 @@
+<!-- <div class="row">
+  <div class="span4">
+    <p class="lead">
+      At this stage of development, we don't have a custom interface for interacting with Alpha Zeta Eta's event calendar. Until that's finished, here is a link to the Google Calendar page:
+      
+    </p>
+    <p><a href="https://www.google.com/calendar/embed?src=apo.uaa%40gmail.com&amp;ctz=America%2FAnchorage" class="btn btn-primary btn-large">
+      <i class="icon-calendar icon-white"></i>
+      Event Calendar
+    </a></p>
+  </div>
+
+  <div class="span7 offset1">
+    <p class="muted">We also have a special event coming up:</p>
+
+    <h2>2013 Sectional Conference</h2>
+    <p>Get ready for the 2013 APO Section 8 conference our chapter is hosting in Anchorage, Alaska!</p>
+    <ul>
+      <li><a href="/conference#registration">Registration</a></li>
+      <li><a href="/conference#activities">Activities</a></li>
+      <li><a href="/conference#pricing">Pricing</a></li>
+    </ul>
+    <p><a class="btn" href="/conference">View details &raquo;</a></p>
+  </div>
+</div> -->
+
+<!-- <span style="font-size:4em; font-weight:bold; line-height:normal;">MAR</span> -->
+
+<div class="row">
+  <div class="span4">
+    <% if @prev != nil %>
+    <a href="?time=<%= @prev %>" class="btn">
+    <% else %>
+    <a class="btn disabled">
+    <% end %>
+      <i class="icon-arrow-left"></i>
+      Previous 6 Months</a>
+  </div>
+  <div class="span4 text-center">
+    <a href="<%= new_event_path %>" class="btn btn-primary">
+      <i class="icon-pencil icon-white"></i>
+      Create New Event
+    </a>
+  </div>
+  <div class="span4 text-right">
+    <% if @next != nil %>
+    <a href="?time=<%= @next %>" class="btn">
+    <% else %>
+    <a class="btn disabled">
+    <% end %>
+      Next 6 Months
+      <i class="icon-arrow-right"></i>
+    </a>
+  </div>
+</div>
+
+<% 
+  for i in 0...@events.length
+    event = @events[i]
+    prev_event = @events[i-1]
+    next_event = @events[i+1]
+%>
+
+<% if prev_event.start_year != event.start_year || prev_event.start_date > event.start_date || i == 0 %>
+
+<!-- Begin Year -->
+<br><ul class="nav nav-list">
+  <li class="divider"></li>
+</ul><br>
+
+<div class="row">
+  <div class="span4 offset4 column-label">
+    <small>Event:</small>
+  </div>
+  <div class="span2 column-label">
+    <small>Time:</small>
+  </div>
+  <div class="span2 column-label">
+    <small>Place:</small>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span1 year">
+    <h2><%= event.start_year %></h2>
+  </div>
+  <div class="span11">
+<% end %>
+
+    <% if prev_event.start_year + prev_event.start_month_caps != event.start_year + event.start_month_caps || i == 0 %>
+
+
+    <!-- Begin Month -->
+    <% if prev_event.start_year == event.start_year && i != 0 %>
+    <ul class="nav nav-list">
+      <li class="divider"></li>
+    </ul><br>
+
+    <div class="row">
+      <div class="span4 offset3 column-label">
+        <small>Event:</small>
+      </div>
+      <div class="span2 column-label">
+        <small>Time:</small>
+      </div>
+      <div class="span2 column-label">
+        <small>Place:</small>
+      </div>
+    </div>
+
+    <% end %>
+
+    <div class="row">
+      <div class="span1 month">
+        <h3><%= event.start_month_caps %></h3>
+      </div>
+      <div class="span10">
+    <% end %>
+
+        <% if prev_event.start_year + prev_event.start_month_caps + prev_event.start_day != event.start_year + event.start_month_caps + event.start_day || prev_event.end_year + prev_event.end_month_caps + prev_event.end_day != event.end_year + event.end_month_caps + event.end_day || i == 0 %>
+        <!-- Begin Day -->
+        <div class="row">
+          <div class="span1 date">
+            <h4>
+              <%= event.start_day %> <div class="day-of-week"><%= event.start_weekday_caps %></div>
+              <% if event.more_than_a_day %>
+              <div class="end-date">
+                <small>to</small>
+                <%= event.end_day %> 
+                <div class="day-of-week"><%= event.end_weekday_caps %></div>
+              </div>
+              <% end %>
+            </h4>
+          </div>
+          <div class="span8 offset1 events">
+        <% end %>
+
+            <!-- Begin Event -->
+            <a href="<%= event_path(event) %>">
+              <div class="row">
+                <div class="span4 title">
+                  <h5><%= event.title %></h5>
+                </div>
+                <div class="span2">
+                  <div class="data">
+                    <!-- <small>Time:</small> -->
+                    <%= event.time %>
+                  </div>
+                </div>
+                <div class="span2">
+                  <div class="data">
+                    <!-- <small>Location:</small> -->
+                    <%= event.location %>
+                  </div>
+                </div>
+              </div>
+              <% if event.description != nil %>
+              <div class="summary">
+                <%= event.description %>
+              </div>
+              <% end %>
+            </a>
+            <!-- End Event -->
+
+        <% if next_event.nil? || next_event.start_year + next_event.start_month_caps + next_event.start_day != event.start_year + event.start_month_caps + event.start_day || next_event.end_year + next_event.end_month_caps + next_event.end_day != event.end_year + event.end_month_caps + event.end_day %>
+          </div>
+        </div>
+        <!-- End Day -->
+        <% end %>
+
+    <% if next_event.nil? || next_event.start_year + next_event.start_month_caps != event.start_year + event.start_month_caps %>
+      </div>
+    </div>
+    <!-- End Month -->
+    <% end %>
+
+<% if next_event.nil? || next_event.start_year != event.start_year %>
+  </div>
+</div>
+<!-- End Year -->
+<% end %>
+
+<% end %> 
+
+<% if @events.length < 1 %>
+<br><ul class="nav nav-list">
+  <li class="divider"></li>
+</ul><br>
+
+<div class="lead text-center">
+  There are no events to display
+</div>
+<% end %>
