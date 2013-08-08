@@ -8,30 +8,45 @@ class EventsController < ApplicationController
   def index
     # display a list of events
     @page = 'Events'
-    
 
-    @time = if params['time'] == nil then 0 else params['time'].to_i end
-    now = DateTime.now
-    range_start = now.advance(:months => @time * 6)
-    range_end = now.advance(:months => (@time + 1) * 6)
-    @events = Event.order('start').where('end > ? and ? > start', range_start, range_end).all
+    time = if params['time'] == nil then 0 else params['time'].to_i end
     
-    if @time == 0
+    now = DateTime.now
+    range_start = now.advance(:months => time * 6)
+    range_end = now.advance(:months => (time + 1) * 6)
+
+    if time == 0
       @header = "Upcoming Events"
     else
       @header = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
+    end
+
+    @events = Event.order('start').where('end > ? and ? > start', range_start, range_end).all
+    first_event = Event.order('start').first
+    last_event = Event.order('end').last
+
+    if first_event != nil && range_start > DateTime.parse(first_event.start)
+      @prev = time - 1
+    else
+      @prev = nil
+    end
+
+    if last_event != nil && range_end < DateTime.parse(last_event.end)
+      @next = time + 1
+    else
+      @next = nil
     end
   end
 
   def show
     # display a specific event
-    @page = @header = @event.name
+    @page = @header = @event.title
   end
 
   def edit
     # return an HTML form for editing a photo
-    @page = 'Edit ' + @event.name
-    @header = @event.name
+    @page = 'Edit ' + @event.title
+    @header = @event.title
   end
 
   def new

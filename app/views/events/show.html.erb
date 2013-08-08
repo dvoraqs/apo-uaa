@@ -1,11 +1,11 @@
 
 <div class="row">
-	<div class="span2 offset4 text-center">
-		<%= link_to raw('<i class="icon-edit icon-white"></i> Edit Event'), edit_event_path(@event), :class => "btn btn-primary" %>
-	</div>
-	<div class="span2 text-center">
-		<%= link_to raw('<i class="icon-trash icon-white"></i> Delete Event'), event_path(@event), :class => "btn btn-danger", :confirm => 'Are you sure you want to destroy this event?', :method => :delete %>
-	</div>
+  <div class="span2 offset4 text-center">
+    <%= link_to raw('<i class="icon-edit icon-white"></i> Edit Event'), edit_event_path(@event), :class => "btn btn-primary" %>
+  </div>
+  <div class="span2 text-center">
+    <%= link_to raw('<i class="icon-trash icon-white"></i> Delete Event'), event_path(@event), :class => "btn btn-danger", :confirm => 'Are you sure you want to destroy this event?', :method => :delete %>
+  </div>
 </div>
 
 <br><ul class="nav nav-list">
@@ -13,13 +13,13 @@
 </ul><br>
 
 <div class="row">
-	<div class="span3">
-		<p><strong>Start:</strong> <%= @event.start %></p>
-		<p><strong>End:</strong> <%= @event.end %></p>
-		<p><strong>Location:</strong> <%= @event.location %></p>
-		<p><strong>Status:</strong> <%= @event.status %></p>
-	</div>
-	<div class="span9">
-		<p class="lead"><%= @event.summary %></p>
-	</div>
+  <div class="span3">
+    <p><strong>Start:</strong> <%= @event.start %></p>
+    <p><strong>End:</strong> <%= @event.end %></p>
+    <p><strong>Location:</strong> <%= @event.location %></p>
+    <p><strong>Status:</strong> <%= @event.status %></p>
+  </div>
+  <div class="span9">
+    <p class="lead"><%= @event.description %></p>
+  </div>
 </div>

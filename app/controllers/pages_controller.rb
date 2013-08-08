@@ -47,6 +47,7 @@ class PagesController < ApplicationController
   end
 
   def test
+    http_basic_authenticate_with :name => "frodo", :password => "thering"
     @nav = 'Home'
     @page = @header = 'Test Page'
   end

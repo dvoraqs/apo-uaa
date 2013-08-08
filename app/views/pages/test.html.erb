@@ -32,26 +32,19 @@ while true
   events = result.data.items
   events.each do |e| 
   
-
     new_event = Event.new
-    new_event.name = e.summary
+    new_event.google_id = e.id
+    new_event.google_link = e.htmlLink
+    new_event.title = e.summary
     new_event.start = if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end
     new_event.end = if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end
     new_event.location = e.location
     new_event.status = e.status
-    new_event.summary = e.description
+    new_event.discription = e.description
     new_event.save
 
-%>
+  end
 
-<!-- Name: <%= e.summary %><br>
-Start: <%= if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end %><br>
-End: <%= if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end %><br>
-Location: <%= e.location %><br>
-Status: <%= e.status %><br>
-Summary: <%= e.description %><br><br> -->
-
-<% end
   if !(page_token = result.data.next_page_token)
     break
   end

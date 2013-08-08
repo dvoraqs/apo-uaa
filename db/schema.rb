@@ -11,15 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20130808185801) do
 
   create_table "events", :force => true do |t|
-    t.text "name"
-    t.text "summary"
-    t.text "start"
-    t.text "end"
-    t.text "location"
-    t.text "status"
+    t.string "google_id"
+    t.string "facebook_id"
+    t.string "google_link"
+    t.string "facebook_link"
+    t.string "updated_at"
+    t.string "title"
+    t.text   "description"
+    t.string "location"
+    t.string "start"
+    t.string "end"
+    t.string "service_area"
+    t.string "status"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
 end

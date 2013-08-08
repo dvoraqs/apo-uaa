@@ -28,7 +28,11 @@
 
 <div class="row">
   <div class="span4">
-    <a href="?time=<%= @time - 1 %>" class="btn">
+    <% if @prev != nil %>
+    <a href="?time=<%= @prev %>" class="btn">
+    <% else %>
+    <a class="btn disabled">
+    <% end %>
       <i class="icon-arrow-left"></i>
       Previous 6 Months</a>
   </div>
@@ -39,7 +43,11 @@
     </a>
   </div>
   <div class="span4 text-right">
-    <a href="?time=<%= @time + 1 %>" class="btn">
+    <% if @next != nil %>
+    <a href="?time=<%= @next %>" class="btn">
+    <% else %>
+    <a class="btn disabled">
+    <% end %>
       Next 6 Months
       <i class="icon-arrow-right"></i>
     </a>
@@ -131,7 +139,7 @@
             <a href="<%= event_path(event) %>">
               <div class="row">
                 <div class="span4 title">
-                  <h5><%= event.name %></h5>
+                  <h5><%= event.title %></h5>
                 </div>
                 <div class="span2">
                   <div class="data">
@@ -146,9 +154,9 @@
                   </div>
                 </div>
               </div>
-              <% if event.summary != nil %>
+              <% if event.description != nil %>
               <div class="summary">
-                <%= event.summary %>
+                <%= event.description %>
               </div>
               <% end %>
             </a>

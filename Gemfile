@@ -43,3 +43,9 @@ gem 'thor', '= 0.14.6'
 
 # This needs to be installed so we can run Rails console on OpenShift directly
 gem 'minitest'
+
+# required to interact with google calendar
+gem 'google-api-client'
+
+# required for user authentication
+gem 'bcrypt-ruby'
