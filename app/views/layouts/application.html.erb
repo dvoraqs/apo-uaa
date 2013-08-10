@@ -42,6 +42,22 @@
             <%= if @nav != 'About Us' then $inactive_li else $active_li end %><%= link_to 'About', '/about' %></li>
             <%= if @nav != 'Contact Us' then $inactive_li else $active_li end %><%= link_to 'Contact', '/contact' %></li>
           </ul>
+          <ul class="nav pull-right">
+            
+
+            <% if current_user != nil %>
+            <li>
+              <a href="<%= user_path(current_user) %>"><%= current_user.name %></a>
+            </li>
+            <li>
+              <%= link_to "Logout", '/logout' %>
+            </li>
+            <% else %>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            <% end %>
+
+          </ul>
         </div>
       </div>
     </div>
@@ -53,6 +69,19 @@
         <div class="hero-unit side-kick">
           <h1><%= @header %></h1>
         </div>
+        <% end %>
+
+        <% if flash[:alert] %>
+          <div class="alert alert-error"><%= flash[:alert] %></div>
+        <% end %>
+        <% if flash[:notice] %>
+          <div class="alert alert-success"><%= flash[:notice] %></div>
+        <% end %>
+
+        <% if flash[:alert] || flash[:notice] %>
+        <ul class="nav nav-list">
+          <li class="divider"></li>
+        </ul><br>
         <% end %>
 
 <!-- v All Content Goes below Here v -->

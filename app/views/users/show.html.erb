@@ -1,0 +1,58 @@
+<!-- show.html.erb -->
+
+<p class="lead">This is your account page. The point of it is mainly to see whether it has been verified by an officer in Alpha Zeta Eta, which will allow you to change some things on the site. There may be more functionality added to this page in the future.</p>
+
+<h2>Account Information</h2>
+<p>Email: <strong><%= current_user.email %></strong></p>
+
+<% if current_user.access_level > 0 %>
+<div class="alert alert-info">
+  This account was verified as a/an <strong><%= current_user.status %></strong> account by <strong><%= current_user.verified_by.name %></strong>.
+</div>
+<% elsif current_user.access_level < 0 %>
+<div class="alert alert-error">
+  This account has been marked as <strong>Untrusted</strong> by <strong><%= current_user.verified_by.name %></strong>. Please <a href="/contact">contact us</a> if this was in error.
+</div>
+<% else %>
+<div class="alert">
+  This account is has not been verified
+</div>
+<% end %>
+
+<h3>Account Levels:</h3>
+
+<p>Each account type will have different levels of access to the site:</p>
+<ul>
+  <li>Unverified - Users that have not been tied to any member of our organization. May have minor abilities in the future such as posting comments or adding themselves as attendees to events.</li>
+  <li>Member - For members of our chapter. These are <em>Participitory</em> accounts and the user will be able to create content (like events) and modify their own creations.</li>
+  <li>Officer - For current/former officers. These accounts will be trusted with <em>Administrative</em> abilities that the site offers. These accounts will have power to modify content posted by other users.</li>
+  <li>Untrusted - For useless/malicious/unverifiable accounts that we can't tie to a person</li>
+</ul>
+
+
+<% if current_user.access_level >= 2 %>
+<br><ul class="nav nav-list">
+  <li class="divider"></li>
+</ul><br>
+
+<h2>New Account Verification<small> &nbsp; <a href="<%= users_path %>">View All Users</a></small></h2>
+<ul>
+  <% @needs_verification.each do |v| %>
+  <li>
+    <%= v.name %> (<a href="mailto:<%= v.email %>"><%= v.email %></a>) &nbsp; &nbsp;
+    <%= form_for v, :url => {:action => 'update'}, html: {class: "form-inline", style: "display:inline-block"} do |f| %>
+      <%= f.label :status %>
+      <%= f.select_tag :status, options_for_select(['Unverified', 'Member', 'Officer', 'Untrusted']) %>
+      <%= hidden_field_tag :user_id, current_user.id %>
+      <%= hidden_field_tag :verify_id, v.id %>
+      <%= f.submit "Change" %>
+    <% end %>
+  </li>
+  <% end %>
+</ul>
+
+<% if @needs_verification.length < 1 %>
+No new accounts to verify
+<% end %>
+
+<% end %>

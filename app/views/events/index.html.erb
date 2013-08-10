@@ -37,10 +37,12 @@
       Previous 6 Months</a>
   </div>
   <div class="span4 text-center">
+    <% if current_user.access_level >= 1 %>
     <a href="<%= new_event_path %>" class="btn btn-primary">
       <i class="icon-pencil icon-white"></i>
       Create New Event
     </a>
+    <% end %>
   </div>
   <div class="span4 text-right">
     <% if @next != nil %>
@@ -191,3 +193,11 @@
   There are no events to display
 </div>
 <% end %>
+
+<ul class="nav nav-list">
+  <li class="divider"></li>
+</ul><br>
+
+<div class="text-center">
+  <%= @range %>
+</div>

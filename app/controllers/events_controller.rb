@@ -4,6 +4,7 @@ class EventsController < ApplicationController
 
   before_filter :set_nav
   before_filter :get_event, :only => [:show, :edit, :update, :destroy]
+  before_filter :check_auth, :only => [:new, :create, :edit, :update, :destroy]
 
   def index
     # display a list of events
@@ -14,24 +15,25 @@ class EventsController < ApplicationController
     now = DateTime.now
     range_start = now.advance(:months => time * 6)
     range_end = now.advance(:months => (time + 1) * 6)
+    @range = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
 
-    if time == 0
+    if time >= 0
       @header = "Upcoming Events"
     else
-      @header = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
+      @header = "Past Events"
     end
 
     @events = Event.order('start').where('end > ? and ? > start', range_start, range_end).all
     first_event = Event.order('start').first
     last_event = Event.order('end').last
 
-    if first_event != nil && range_start > DateTime.parse(first_event.start)
+    if first_event != nil && range_start > DateTime.parse(first_event.start) || range_start > now
       @prev = time - 1
     else
       @prev = nil
     end
 
-    if last_event != nil && range_end < DateTime.parse(last_event.end)
+    if last_event != nil && range_end < DateTime.parse(last_event.end) || range_end < now
       @next = time + 1
     else
       @next = nil
@@ -84,23 +86,9 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
-  def google_calendar
-    require 'rubygems'
-    require 'google/api_client'
-    require 'yaml'
-
-    oauth_yaml = YAML.load_file('.google-api.yaml')
-    client = Google::APIClient.new
-    client.authorization.client_id = oauth_yaml["client_id"]
-    client.authorization.client_secret = oauth_yaml["client_secret"]
-    client.authorization.scope = oauth_yaml["scope"]
-    client.authorization.refresh_token = oauth_yaml["refresh_token"]
-    client.authorization.access_token = oauth_yaml["access_token"]
-
-    if client.authorization.refresh_token && client.authorization.expired?
-      client.authorization.fetch_access_token!
+  def check_auth
+    if current_user == nil || current_user.access_level < 1
+      redirect_to events_path, :alert => "Must be logged in with a verified Member/Officer account"
     end
-
-    service = client.discovered_api('calendar', 'v3')
   end
 end

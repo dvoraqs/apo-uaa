@@ -49,4 +49,4 @@ gem 'minitest'
 gem 'google-api-client'
 
 # required for user authentication
-gem 'bcrypt-ruby'
+gem 'bcrypt-ruby', '~> 3.0.0'

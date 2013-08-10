@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Account Status</th>
+      <th>Verified By</th>
+      <th>Controls</th>
+    </tr>
+  </thead>
+<% @users.each do |u| %>
+  <tr>
+    <td><%= u.name %></td>
+    <td><%= u.email %></td>
+    <td><%= u.status %></td>
+    <td><%= User.find(u.user_id).name %></td>
+    <td>
+      
+    </td>
+  </tr>
+<% end %>
+</table

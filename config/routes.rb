@@ -53,8 +53,10 @@ RailsApp::Application.routes.draw do
   # See how all your routes lay out with "rake routes"
 
 
-
-  resources :events, :media
+  get '/register' => 'users#new', :as => 'register'
+  get '/login' => 'sessions#new', :as => 'login'
+  get '/logout' => 'sessions#destroy', :as => 'logout'
+  resources :events, :media, :users, :sessions
 
   # match ':controller/:action(.:format)'
   # root :to => 'pages#index'
@@ -63,9 +65,7 @@ RailsApp::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
 
-  # match ':controller(/:action(/:id))(.:format)'
-  # match ':controller/:id(.:format)', :action => 'show'
-
+  # match '/sessions(/:action)', :controller => 'Sessions'
   match '/:action', :controller => 'Pages'
   match '/', :controller => 'Pages', :action => 'index'
 end

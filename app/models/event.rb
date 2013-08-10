@@ -1,9 +1,9 @@
 class Event < ActiveRecord::Base
-  attr_accessible :name, :start, :end, :location, :status, :summary
+  attr_accessible :title, :start, :end, :location, :status, :description
 
   before_save do |e|
-  	if e.summary == ''
-  	  e.summary = nil
+  	if e.description == ''
+  	  e.description = nil
   	end
   end
 

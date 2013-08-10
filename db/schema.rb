@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130808185801) do
+ActiveRecord::Schema.define(:version => 20130809093133) do
 
   create_table "events", :force => true do |t|
     t.string "google_id"
@@ -33,6 +33,9 @@ ActiveRecord::Schema.define(:version => 20130808185801) do
     t.string   "password_digest"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "status"
   end
 
 end

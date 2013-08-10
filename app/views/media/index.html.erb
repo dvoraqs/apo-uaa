@@ -21,7 +21,8 @@
 
 <h2>Documents</h2>
 <div class="row">
-  <!-- <div class="span8">
+  <% if current_user %>
+  <div class="span8">
     <h3>From the National Office</h3>
     <div class="row">
       <div class="span4">
@@ -83,7 +84,8 @@
         </ul>
       </div>
     </div>
-  </div> -->
+  </div>
+  <% end %>
   <div class="span4">
     <h3>From our Chapter</h3>
     <h4><a href="/bylaws">Chapter Bylaws</a></h4>
