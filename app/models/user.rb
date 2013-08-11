@@ -17,8 +17,10 @@ class User < ActiveRecord::Base
 
   def access_level
     if self.status == 'Officer'
-      2
+      3
     elsif self.status == 'Member'
+      2
+    elsif self.status == 'Verified'
       1
     elsif self.status == 'Untrusted'
       -1

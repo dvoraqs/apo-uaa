@@ -1,11 +1,25 @@
-<h2>Enter new event information:</h2>
-
-<%= form_for @event do |f| %>
-  <%= f.label :title %><%= f.text_field :title %><br>
-  <%= f.label :start %><%= f.text_field :start %><br>
-  <%= f.label :end %><%= f.text_field :end %><br>
-  <%= f.label :location %><%= f.text_field :location %><br>
-  <%= f.label :status %><%= f.text_field :status %><br>
-  <%= f.label :description %><%= f.text_area :description, :size => "60x12" %><br>
-  <%= submit_tag %>
-<% end %>
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for @event do |f| %>
+      <%= f.label :title %><%= f.text_field :title, :class => "input-block-level" %>
+      <div class="row">
+        <div class="span3">
+          <%= f.label :start %><input id="event_start" name="event[start]" class="input-block-level" type="datetime-local" />
+        </div>
+        <div class="span3">
+          <%= f.label :end %><input id="event_end" name="event[end]" class="input-block-level" type="datetime-local" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="span3">
+          <%= f.label :location %><%= f.text_field :location, :class => "input-block-level" %>
+        </div>
+        <div class="span3">
+          <%= f.label :status %><%= f.select :status, options_for_select(['Tentative', 'Confirmed', 'Cancelled']) %>
+        </div>
+      </div>
+      <%= f.label :description %><%= f.text_area :description, :size => "5x10", :class => "input-block-level" %>
+      <%= f.submit nil, :class => "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

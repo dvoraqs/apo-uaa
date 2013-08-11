@@ -1,6 +1,6 @@
 <!-- show.html.erb -->
 
-<p class="lead">This is your account page. The point of it is mainly to see whether it has been verified by an officer in Alpha Zeta Eta, which will allow you to change some things on the site. There may be more functionality added to this page in the future.</p>
+<p class="lead">This is your account page. The point of it is mainly to see if you've been verified as a member of the club, which will allow you to change some things on the site. There may be more functionality added to this page in the future.</p>
 
 <h2>Account Information</h2>
 <p>Email: <strong><%= current_user.email %></strong></p>
@@ -15,22 +15,32 @@
 </div>
 <% else %>
 <div class="alert">
-  This account is has not been verified
+  This account has not been verified by an officer in Alpha Zeta Eta
 </div>
 <% end %>
 
 <h3>Account Levels:</h3>
 
-<p>Each account type will have different levels of access to the site:</p>
-<ul>
-  <li>Unverified - Users that have not been tied to any member of our organization. May have minor abilities in the future such as posting comments or adding themselves as attendees to events.</li>
-  <li>Member - For members of our chapter. These are <em>Participitory</em> accounts and the user will be able to create content (like events) and modify their own creations.</li>
-  <li>Officer - For current/former officers. These accounts will be trusted with <em>Administrative</em> abilities that the site offers. These accounts will have power to modify content posted by other users.</li>
-  <li>Untrusted - For useless/malicious/unverifiable accounts that we can't tie to a person</li>
-</ul>
+<p>These are the plans for each type and not all features are implemented right now. Each one will have different levels of access to the site:</p>
+<dl>
+  <dt>Unverified</dt>
+  <dd>Users that have not been tied to any member of our organization. Will have some abilities in the future beyond anonymous browsing such as posting comments and registering as an attendee to events.</dd>
+
+  <dt>Verified</dt>
+  <dd>For known people outside of our chapter. Will have the same abilities as an unverified account with added trust.</dd>
+
+  <dt>Member</dt>
+  <dd>For members of our chapter. The user will be able to create content (like events) and modify their own creations.</dd>
+
+  <dt>Officer</dt>
+  <dd>For current/former officers. These accounts will be trusted with <em>Administrative</em> abilities that the site offers. These accounts will have the power to modify content posted by other users.</dd>
+
+  <dt>Untrusted</dt>
+  <dd>For useless/malicious/unverifiable accounts that we can't tie to a person</dd>
+</dl>
 
 
-<% if current_user.access_level >= 2 %>
+<% if current_user.access_level >= 3 %>
 <br><ul class="nav nav-list">
   <li class="divider"></li>
 </ul><br>
@@ -42,8 +52,7 @@
     <%= v.name %> (<a href="mailto:<%= v.email %>"><%= v.email %></a>) &nbsp; &nbsp;
     <%= form_for v, :url => {:action => 'update'}, html: {class: "form-inline", style: "display:inline-block"} do |f| %>
       <%= f.label :status %>
-      <%= f.select_tag :status, options_for_select(['Unverified', 'Member', 'Officer', 'Untrusted']) %>
-      <%= hidden_field_tag :user_id, current_user.id %>
+      <%= f.select :status, options_for_select(['Unverified', 'Verified', 'Member', 'Officer', 'Untrusted']) %>
       <%= hidden_field_tag :verify_id, v.id %>
       <%= f.submit "Change" %>
     <% end %>

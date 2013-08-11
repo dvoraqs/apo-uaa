@@ -2,10 +2,8 @@
 <html>
   <head>
     <title>
-
       <% $organization = 'Alpha Zeta Eta Chapter of Alpha Phi Omega' %>
       <%= if @page != 'Home' then @page + ' - ' end %><%= $organization %>
-
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,33 +29,37 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <% $active_li = raw '<li class="active">' %>
+          <% $inactive_li = raw '<li>' %>
           <ul class="nav">
-            <!-- this could maybe be simplified by iterating through a list of the buttons or something -->
-            <% $active_li = raw '<li class="active">' %>
-            <% $inactive_li = raw '<li>' %>
-            <%= if @nav != 'Home' then $inactive_li else $active_li end %><%= link_to 'Alpha Zeta Eta', '/', :class => 'brand' %></li>
-            <%= if @nav != 'Events' then $inactive_li else $active_li end %><%= link_to 'Events', '/events/' %></li>
-            <%= if @nav != 'Media' then $inactive_li else $active_li end %><%= link_to 'Media', '/media/' %></li>
-            <%= if @nav != 'How to Join' then $inactive_li else $active_li end %><%= link_to 'Join', '/join' %></li>
-            <%= if @nav != 'About Us' then $inactive_li else $active_li end %><%= link_to 'About', '/about' %></li>
-            <%= if @nav != 'Contact Us' then $inactive_li else $active_li end %><%= link_to 'Contact', '/contact' %></li>
+          <%= if @nav != 'Home' then $inactive_li else $active_li end %><%= link_to 'Alpha Zeta Eta', '/', :class => 'brand' %></li>
           </ul>
-          <ul class="nav pull-right">
-            
-
-            <% if current_user != nil %>
-            <li>
-              <a href="<%= user_path(current_user) %>"><%= current_user.name %></a>
-            </li>
-            <li>
-              <%= link_to "Logout", '/logout' %>
-            </li>
-            <% else %>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-            <% end %>
-
-          </ul>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <!-- this could maybe be simplified by iterating through a list of the buttons or something -->
+              
+              <%= if @nav != 'Events' then $inactive_li else $active_li end %><%= link_to 'Events', '/events/' %></li>
+              <%= if @nav != 'Media' then $inactive_li else $active_li end %><%= link_to 'Media', '/media/' %></li>
+              <%= if @nav != 'How to Join' then $inactive_li else $active_li end %><%= link_to 'Join', '/join' %></li>
+              <%= if @nav != 'About Us' then $inactive_li else $active_li end %><%= link_to 'About', '/about' %></li>
+              <%= if @nav != 'Contact Us' then $inactive_li else $active_li end %><%= link_to 'Contact', '/contact' %></li>
+            </ul>
+            <ul class="nav pull-right">
+              <li class="divider-vertical"></li>
+              <% if current_user %>
+              <%= if @nav != "User" then $inactive_li else $active_li end %><%= link_to current_user.name, user_path(current_user) %></li>
+              <li><%= link_to "Logout", logout_path(:protocol => 'https') %></li>
+              <% else %>
+              <li><%= link_to "Login", login_path(:protocol => 'https') %></li>
+              <li><%= link_to "Register", register_path(:protocol => 'https') %></li>
+              <% end %>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

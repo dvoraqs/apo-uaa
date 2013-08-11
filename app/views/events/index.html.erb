@@ -37,7 +37,7 @@
       Previous 6 Months</a>
   </div>
   <div class="span4 text-center">
-    <% if current_user.access_level >= 1 %>
+    <% if current_user && current_user.access_level >= 1 %>
     <a href="<%= new_event_path %>" class="btn btn-primary">
       <i class="icon-pencil icon-white"></i>
       Create New Event

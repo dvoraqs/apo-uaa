@@ -52,20 +52,18 @@ RailsApp::Application.routes.draw do
 
   # See how all your routes lay out with "rake routes"
 
-
   get '/register' => 'users#new', :as => 'register'
   get '/login' => 'sessions#new', :as => 'login'
   get '/logout' => 'sessions#destroy', :as => 'logout'
-  resources :events, :media, :users, :sessions
 
-  # match ':controller/:action(.:format)'
-  # root :to => 'pages#index'
+  resources :events, :media, :sessions, :users
 
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-
-
-  # match '/sessions(/:action)', :controller => 'Sessions'
-  match '/:action', :controller => 'Pages'
-  match '/', :controller => 'Pages', :action => 'index'
+  get '/about' => 'pages#about', :as => 'about'
+  get '/bylaws' => 'pages#bylaws', :as => 'bylaws'
+  get '/contact' => 'pages#contact', :as => 'contact'
+  get '/join' => 'pages#join', :as => 'join'
+  get '/conference' => 'pages#conference', :as => 'conference'
+  get '/conference_register' => 'pages#conference_register', :as => 'conference_register'
+  get '/pledge_signup' => 'pages#pledge_signup', :as => 'pledge_signup'
+  get '/' => 'pages#index', :as => 'root'
 end

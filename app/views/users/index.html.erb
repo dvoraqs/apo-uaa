@@ -12,9 +12,16 @@
   <tr>
     <td><%= u.name %></td>
     <td><%= u.email %></td>
-    <td><%= u.status %></td>
-    <td><%= User.find(u.user_id).name %></td>
-    <td>
+    <td><%= if u.status then u.status else 'Unverified' end %></td>
+    <td><%= User.find(u.user_id).name if u.user_id %></td>
+    <td><%= link_to 'Delete', user_path(u), :class => "btn btn-mini btn-danger", :confirm => 'Are you sure you want to delete this user?', :method => :delete %>
+
+      <% form_for u, :url => users_path(u), html: {method: "put", class: "form-inline", style: "display:inline-block"} do |f| %>
+      <%= f.label :status %>
+      <%= f.select :status, options_for_select(['Unverified', 'Verified', 'Member', 'Officer', 'Untrusted']) %>
+      <%= hidden_field_tag :verify_id, u.id %>
+      <%= f.submit "Change" %>
+    <% end %>
       
     </td>
   </tr>

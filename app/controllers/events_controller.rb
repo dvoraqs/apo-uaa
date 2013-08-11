@@ -61,6 +61,7 @@ class EventsController < ApplicationController
     # create a new event
     event = Event.new(params[:event])
     if event.save
+      flash[:notice] = 'Event created successfully'
       redirect_to event_path(event)
     end
   end
@@ -68,14 +69,17 @@ class EventsController < ApplicationController
   def update
     # update a specific event
     if @event.update_attributes(params[:event])
+      flash[:notice] = 'Event updated successfully'
       redirect_to event_path(@event)
     end
   end
 
   def destroy
     # delete a specific event
-    @event.destroy
-    redirect_to events_path
+    if @event.destroy
+      flash[:notice] = 'Event deleted successfully'
+      redirect_to events_path
+    end
   end
 
   def set_nav

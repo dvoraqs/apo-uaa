@@ -4,7 +4,7 @@
 
     <% fields = [:title, :start, :end, :location, :status, :description] %>
 
-    <%= form_for @event, :html => {:class => "form-horizontal"} do |f| %>
+    <% form_for @event, :html => {:class => "form-horizontal"} do |f| %>
       <% fields.each do |field| %>
       <div class="control-group">
       <%= f.label field, :class => "control-label" %>
@@ -19,6 +19,28 @@
           <%= submit_tag "Save Changes", :class => "btn btn-primary" %>
         </div>
       </div>
+    <% end %>
+
+    <%= form_for @event do |f| %>
+      <%= f.label :title %><%= f.text_field :title, :class => "input-block-level" %>
+      <div class="row">
+        <div class="span3">
+          <%= f.label :start %><input id="event_start" name="event[start]" class="input-block-level" type="datetime-local" value="<%= @event.start %>" />
+        </div>
+        <div class="span3">
+          <%= f.label :end %><input id="event_end" name="event[end]" class="input-block-level" type="datetime-local" value="<%= @event.end %>" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="span3">
+          <%= f.label :location %><%= f.text_field :location, :class => "input-block-level" %>
+        </div>
+        <div class="span3">
+          <%= f.label :status %><%= f.select :status, options_for_select(['Tentative', 'Confirmed', 'Cancelled']) %>
+        </div>
+      </div>
+      <%= f.label :description %><%= f.text_area :description, :size => "5x10", :class => "input-block-level" %>
+      <%= f.submit nil, :class => "btn btn-primary" %>
     <% end %>
 
   </div>
