@@ -23,6 +23,10 @@ class Event < ActiveRecord::Base
   	self.start_date.strftime('%Y')
   end
 
+  def start_month
+    self.start_date.strftime('%b')
+  end
+
   def start_month_caps
   	self.start_date.strftime('%^b')
   end
@@ -32,7 +36,7 @@ class Event < ActiveRecord::Base
   end
 
   def start_weekday
-  	self.start_date.strftime('%a ')
+  	self.start_date.strftime('%a')
   end
 
   def start_weekday_caps
@@ -67,6 +71,10 @@ class Event < ActiveRecord::Base
   	self.end_date.strftime('%Y')
   end
 
+  def end_month
+    self.end_date.strftime('%b')
+  end
+
   def end_month_caps
   	self.end_date.strftime('%^b')
   end
@@ -76,7 +84,7 @@ class Event < ActiveRecord::Base
   end
 
   def end_weekday
-  	self.end_date.strftime('%a ')
+  	self.end_date.strftime('%a')
   end
 
   def end_weekday_caps
@@ -89,6 +97,32 @@ class Event < ActiveRecord::Base
       self.end_date.strftime('%l%P')
     else
       self.end_date.strftime('%l:%M%P')
+    end
+  end
+
+  def full_date
+    date = self.start_year + ' ' + self.start_month + ' ' + start_day
+
+    if self.more_than_a_day
+      date = date + ' - '
+    end
+
+    if self.start_year != self.end_year
+      date = date + ' ' + self.end_year
+    end
+
+    if self.start_year+self.start_month != self.end_year+self.end_month
+      date = date + ' ' + self.end_month
+    end
+
+    if self.more_than_a_day
+      date = date + ' ' + self.end_day
+    end
+
+    if !self.more_than_a_day
+      date = date + ' (' + self.start_weekday + ')'
+    elsif self.end_date < self.start_date.advance(:days => 7)
+      date = date + ' (' + self.start_weekday + ' - ' + self.end_weekday + ')'
     end
   end
 

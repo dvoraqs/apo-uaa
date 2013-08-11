@@ -161,6 +161,10 @@ future. Set it to the height of the tabs when the content is the tallest */
   top: -8px;
 }
 
+#Events .full-date {
+  display: none;
+}
+
 #Events h5 {
   font-size: 16px;
 }
@@ -213,10 +217,19 @@ future. Set it to the height of the tabs when the content is the tallest */
     height: auto;
   }
 
+  #Events .date {
+    width: auto;
+    text-align: left;
+  }
+
+  #Events .column-label {
+    display: none;
+  }
+
   #Events .year h2, 
   #Events .month h3, 
   #Events .date h4 {
-    font-size: 40px;
+    /*font-size: 40px;
     line-height: 40px;
     left: 0px;
     top: 0px;
@@ -224,7 +237,14 @@ future. Set it to the height of the tabs when the content is the tallest */
     text-align: left;
     -webkit-transform: rotate(0deg); 
     -moz-transform: rotate(0deg); 
-    -o-transform: rotate(0deg); 
+    -o-transform: rotate(0deg); */
+    display: none;
+  }
+
+  #Events .full-date {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
   }
 }
 
