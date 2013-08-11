@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     @nav = 'User'
 
     if @user.access_level >= 3
-      @needs_verification = User.where('status IS NULL or status == "Unverified"').all
+      @needs_verification = User.where('status IS NULL || status = "Unverified"').all
     end
   end
 
