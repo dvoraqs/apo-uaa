@@ -1,26 +1,32 @@
 class Event < ActiveRecord::Base
-  attr_accessible :title, :start, :end, :location, :status, :description
+  attr_accessible :title, :start, :end, :location, :status, :description, :recurrence_rule, :recurs_until, :user_id
+
+  validates_presence_of :title
+  validates_presence_of :start
+  validates_presence_of :end
+  belongs_to :user
 
   before_save do |e|
-  	if e.description == ''
-  	  e.description = nil
-  	end
+    if e.description == ''
+      e.description = nil
+    end
   end
 
   def more_than_a_day
-  	self.start_date.advance(:days => 1) < self.end_date
+    self.start_date.advance(:days => 1) < self.end_date
   end
 
   def start_date
-  	DateTime.parse(self[:start])
+    # Time.zone = "Alaska" # For when/if we store user time zones
+    self[:start]
   end
 
   def start_date_short
-  	self.start_date.strftime('%m/%d ')
+    self.start_date.strftime('%m/%d ')
   end
 
   def start_year
-  	self.start_date.strftime('%Y')
+    self.start_date.strftime('%Y')
   end
 
   def start_month
@@ -28,23 +34,23 @@ class Event < ActiveRecord::Base
   end
 
   def start_month_caps
-  	self.start_date.strftime('%^b')
+    self.start_date.strftime('%^b')
   end
 
   def start_day
-  	self.start_date.strftime('%d')
+    self.start_date.strftime('%d')
   end
 
   def start_weekday
-  	self.start_date.strftime('%a')
+    self.start_date.strftime('%a')
   end
 
   def start_weekday_caps
-  	self.start_date.strftime('%^a')
+    self.start_date.strftime('%^a')
   end
 
   def start_time
-  	if self.start_date.strftime('%M') == '00'
+    if self.start_date.strftime('%M') == '00'
       self.start_date.strftime('%l%P')
     else
       self.start_date.strftime('%l:%M%P')
@@ -54,9 +60,11 @@ class Event < ActiveRecord::Base
   # all of the same for the end date
 
   def end_date
-  	# rewrite 12:00am end dates to fall inside the end of the previous day
-  	date = DateTime.parse(self[:end])
-  	if date.strftime('%l:%M%P') != '12:00am'
+    # Time.zone = "Alaska"
+    # rewrite 12:00am end dates to fall inside the end of the previous day
+    # date = DateTime.parse(self[:end])
+    date = self[:end]
+    if date.strftime('%l:%M%P') != '12:00am'
       date
     else
       date.advance(:seconds => -1)
@@ -64,11 +72,11 @@ class Event < ActiveRecord::Base
   end
 
   def end_date_short
-  	self.end_date.strftime('%m/%d ')
+    self.end_date.strftime('%m/%d ')
   end
 
   def end_year
-  	self.end_date.strftime('%Y')
+    self.end_date.strftime('%Y')
   end
 
   def end_month
@@ -76,24 +84,24 @@ class Event < ActiveRecord::Base
   end
 
   def end_month_caps
-  	self.end_date.strftime('%^b')
+    self.end_date.strftime('%^b')
   end
 
   def end_day
-  	self.end_date.strftime('%d')
+    self.end_date.strftime('%d')
   end
 
   def end_weekday
-  	self.end_date.strftime('%a')
+    self.end_date.strftime('%a')
   end
 
   def end_weekday_caps
-  	self.end_date.strftime('%^a')
+    self.end_date.strftime('%^a')
   end
 
   def end_time
-  	# rewrite 12:00am end dates to fall inside the end of the previous day
-  	if self.end_date.strftime('%M') == '00'
+    # rewrite 12:00am end dates to fall inside the end of the previous day
+    if self.end_date.strftime('%M') == '00'
       self.end_date.strftime('%l%P')
     else
       self.end_date.strftime('%l:%M%P')

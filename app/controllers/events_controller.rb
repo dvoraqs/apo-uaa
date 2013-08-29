@@ -27,13 +27,13 @@ class EventsController < ApplicationController
     first_event = Event.order('start').first
     last_event = Event.order('end').last
 
-    if first_event != nil && range_start > DateTime.parse(first_event.start) || range_start > now
+    if first_event != nil && range_start > first_event.start || range_start > now
       @prev = time - 1
     else
       @prev = nil
     end
 
-    if last_event != nil && range_end < DateTime.parse(last_event.end) || range_end < now
+    if last_event != nil && range_end < last_event.end || range_end < now
       @next = time + 1
     else
       @next = nil
@@ -46,7 +46,7 @@ class EventsController < ApplicationController
   end
 
   def edit
-    # return an HTML form for editing a photo
+    # return an HTML form for editing an event
     @page = 'Edit ' + @event.title
     @header = @event.title
   end
@@ -59,18 +59,27 @@ class EventsController < ApplicationController
 
   def create
     # create a new event
-    event = Event.new(params[:event])
-    if event.save
-      flash[:notice] = 'Event created successfully'
-      redirect_to event_path(event)
+    @event = Event.new(params[:event])
+    if @event.save
+      flash[:notice] = 'Successfully created event ' + @event.title
+      redirect_to event_path(@event)
+    else
+      flash.now[:alert] = 'There were problems creating the event'
+      @page = @header = 'New Event'
+      render 'new'
     end
   end
 
   def update
     # update a specific event
     if @event.update_attributes(params[:event])
-      flash[:notice] = 'Event updated successfully'
+      flash[:notice] = 'Successfully updated event ' + @event.title
       redirect_to event_path(@event)
+    else
+      flash.now[:alert] = 'There were problems updating event ' + @event.title
+      @page = 'Edit ' + @event.title
+      @header = @event.title
+      render 'edit'
     end
   end
 

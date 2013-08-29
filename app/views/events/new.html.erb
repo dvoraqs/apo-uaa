@@ -1,13 +1,23 @@
 <div class="row">
   <div class="span6 offset3">
+    <% if @event.errors.any? %>
+    <div class="alert alert-block">
+      <ul>
+      <% @event.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+    <% end %>
+
     <%= form_for @event do |f| %>
       <%= f.label :title %><%= f.text_field :title, :class => "input-block-level" %>
       <div class="row">
         <div class="span3">
-          <%= f.label :start %><input id="event_start" name="event[start]" class="input-block-level" type="datetime-local" />
+          <%= f.label :start %><input id="event_start" name="event[start]" class="input-block-level" type="datetime-local" value="<%= if not @event.start.nil? then @event.start.strftime('%FT%R') else '' end %>" />
         </div>
         <div class="span3">
-          <%= f.label :end %><input id="event_end" name="event[end]" class="input-block-level" type="datetime-local" />
+          <%= f.label :end %><input id="event_end" name="event[end]" class="input-block-level" type="datetime-local" value="<%= if not @event.end.nil? then @event.end.strftime('%FT%R') else '' end %>" />
         </div>
       </div>
       <div class="row">
@@ -18,7 +28,19 @@
           <%= f.label :status %><%= f.select :status, options_for_select(['Tentative', 'Confirmed', 'Cancelled']) %>
         </div>
       </div>
-      <%= f.label :description %><%= f.text_area :description, :size => "5x10", :class => "input-block-level" %>
+
+      <div class="row">
+        <div class="span3">
+          <%= f.label :recurrence_rule, "Repeats" %><%= f.select :status, options_for_select([['Never', nil],['Daily', 'DAILY'], ['Weekly', 'WEEKLY'], ['Yearly', 'YEARLY']]) %>
+        </div>
+        <div class="span3">
+          <%= f.label :recurs_until, "Until" %><input id="event_recurs_until" name="event[recurs_until]" class="input-block-level" type="datetime-local" value="<%= if not @event.recurs_until.nil? then @event.recurs_until.strftime('%FT%R') else '' end %>" %>
+        </div>
+      </div>
+
+      <%= f.label :description %><%= f.text_area :description, :size => "5x5", :class => "input-block-level" %>
+
+      <%= f.hidden_field :user_id, :value => current_user.id %>
       <%= f.submit nil, :class => "btn btn-primary" %>
     <% end %>
   </div>

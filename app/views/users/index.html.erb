@@ -1,29 +1,97 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Account Status</th>
-      <th>Verified By</th>
-      <th>Controls</th>
-    </tr>
-  </thead>
-<% @users.each do |u| %>
-  <tr>
-    <td><%= u.name %></td>
-    <td><%= u.email %></td>
-    <td><%= if u.status then u.status else 'Unverified' end %></td>
-    <td><%= User.find(u.user_id).name if u.user_id %></td>
-    <td><%= link_to 'Delete', user_path(u), :class => "btn btn-mini btn-danger", :confirm => 'Are you sure you want to delete this user?', :method => :delete %>
+<div class="row">
+  <div class="span8">
+    <h2>Unverified/New Accounts</h2>
+    <!-- <ul> -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Controls</th>
+        </tr>
+      </thead>
+      <% @needs_verification.each do |v| %>
+      <tr>
+        <td><%= v.name %></td>
+        <td><a href="mailto:<%= v.email %>"><%= v.email %></a></td>
+        <td>
+          <%= form_for v, :url => user_path(v), html: {class: "form-inline", style: "margin-bottom:0;"} do |f| %>
+            <%= f.label :status %>
+            <%= f.select :status, options_for_select([['Unverified', nil], 'Verified', 'Member', 'Officer', 'Untrusted'], :class => "btn-mini") %>
+            <%= f.hidden_field :user_id, :value => current_user.id %> 
+            <%= f.submit "Change", :class => "btn btn-mini" %>
+          <% end %>
+        </td>
+      <tr>
+      <% end %>
+      <% if @needs_verification.length < 1 %>
+      <tr><td colspan="3">No accounts to verify</td></tr>
+      <% end %>
+    <!-- </ul> -->
+    </table>
 
-      <% form_for u, :url => users_path(u), html: {method: "put", class: "form-inline", style: "display:inline-block"} do |f| %>
-      <%= f.label :status %>
-      <%= f.select :status, options_for_select(['Unverified', 'Verified', 'Member', 'Officer', 'Untrusted']) %>
-      <%= hidden_field_tag :verify_id, u.id %>
-      <%= f.submit "Change" %>
+
+    <br><ul class="nav nav-list">
+      <li class="divider"></li>
+    </ul><br>
+
+
+    <h2>Verified Accounts</h2>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <!-- <th>Verified By</th> -->
+          <th>Controls</th>
+        </tr>
+      </thead>
+    <% @users.each do |u| %>
+      <tr>
+        <td><%= link_to u.name, user_path(u) %></td>
+        <td><a href="mailto:<%= u.email %>"><%= u.email %></a></td>
+        <td><%= if u.status then u.status else 'Unverified' end %></td>
+        <!-- <td><%= User.find(u.user_id).name if u.user_id %></td> -->
+        <td>
+          <% if current_user.user_id != u.id %>
+          <%= form_for u, :url => user_path(u), html: {class: "form-inline", style: "display:inline-block; margin-bottom:0;"} do |f| %>
+            <%= f.hidden_field :status, :value => nil %>
+            <%= f.hidden_field :user_id, :value => nil %> 
+            <%= f.submit "Reset Verification", :class => "btn btn-mini btn-warning" %>
+          <% end %>
+          <% end %>
+          <% if u.access_level < 1 %>
+          <%= link_to 'Delete', user_path(u), :class => "btn btn-mini btn-danger", :confirm => 'Are you sure you want to delete this user?', :method => :delete %>
+          <% end %>
+        </td>
+      </tr>
     <% end %>
-      
-    </td>
-  </tr>
-<% end %>
-</table
+    </table>
+  </div>
+
+  <div class="span4">
+    <h3>Account Levels:</h3>
+
+    <p>These are the plans for each type and not all features are implemented right now. Each one will have different levels of access to the site:</p>
+    <dl>
+      <dt>Unverified</dt>
+      <dd>Users that have not been tied to any member of our organization. Will have some abilities in the future beyond anonymous browsing such as posting comments and registering as an attendee to events.</dd>
+
+      <dt>Verified</dt>
+      <dd>For known people outside of our chapter. Will have the same abilities as an unverified account but this status carries additional trust.</dd>
+
+      <dt>Member</dt>
+      <dd>For members of our chapter. The user will be able to create content (like events) and modify their own creations.</dd>
+
+      <dt>Officer</dt>
+      <dd>For current/former officers. These accounts will be trusted with <em>Administrative</em> abilities that the site offers. These accounts will have the power to modify content posted by other users.</dd>
+
+      <dt>Untrusted</dt>
+      <dd>For useless/malicious/unverifiable accounts that we can't tie to a person</dd>
+    </dl>
+  </div>
+</div>
+
+

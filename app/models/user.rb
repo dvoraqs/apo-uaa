@@ -2,10 +2,18 @@ class User < ActiveRecord::Base
 	attr_accessible :name, :email, :password, :password_confirmation, :status, :user_id
   has_secure_password
   validates_presence_of :name
-  validates_presence_of :password, :on => :create
+  validates_uniqueness_of :name
   validates_presence_of :email
   validates_uniqueness_of :email
+  validates_presence_of :password, :on => :create
+ 
   belongs_to :user
+
+  before_save do |u|
+    if u.status == ''
+      u.status = nil
+    end
+  end
 
   def verified
   	self.user != nil
@@ -16,17 +24,8 @@ class User < ActiveRecord::Base
   end
 
   def access_level
-    if self.status == 'Officer'
-      3
-    elsif self.status == 'Member'
-      2
-    elsif self.status == 'Verified'
-      1
-    elsif self.status == 'Untrusted'
-      -1
-    else
-      0
-    end
+    levels = {'Officer' => 3, 'Member' => 2, 'Verified' => 1, 'Untrusted' => -1}
+    if levels.has_key?(self.status) then levels[self.status] else 0 end
   end
 end
 

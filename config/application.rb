@@ -58,5 +58,8 @@ module RailsApp
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Changes time zone to Alaska time
+    config.time_zone = "Alaska"
   end
 end

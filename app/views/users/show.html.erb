@@ -1,67 +1,43 @@
 <!-- show.html.erb -->
 
+<% if current_user and current_user.id == @user.id %>
 <p class="lead">This is your account page. The point of it is mainly to see if you've been verified as a member of the club, which will allow you to change some things on the site. There may be more functionality added to this page in the future.</p>
+<% end %>
 
 <h2>Account Information</h2>
-<p>Email: <strong><%= current_user.email %></strong></p>
 
-<% if current_user.access_level > 0 %>
+<% if current_user and current_user.access_level > 1 %>
+<p>Email: <strong><%= @user.email %></strong></p>
+<% end %>
+
+<% if @user.access_level > 0 %>
 <div class="alert alert-info">
-  This account was verified as a/an <strong><%= current_user.status %></strong> account by <strong><%= current_user.verified_by.name %></strong>.
+  This account was verified as a/an <strong><%= @user.status %></strong> account by <strong><%= @user.verified_by.name %></strong>.
 </div>
-<% elsif current_user.access_level < 0 %>
+<% elsif @user.access_level < 0 %>
 <div class="alert alert-error">
-  This account has been marked as <strong>Untrusted</strong> by <strong><%= current_user.verified_by.name %></strong>. Please <a href="/contact">contact us</a> if this was in error.
+  This account has been marked as <strong>Untrusted</strong> by <strong><%= @user.verified_by.name %></strong>. Please <a href="/contact">contact us</a> if this was in error.
 </div>
 <% else %>
 <div class="alert">
-  This account has not been verified by an officer in Alpha Zeta Eta
+  This account has not yet been verified by an officer in Alpha Zeta Eta
 </div>
 <% end %>
 
-<h3>Account Levels:</h3>
-
-<p>These are the plans for each type and not all features are implemented right now. Each one will have different levels of access to the site:</p>
-<dl>
-  <dt>Unverified</dt>
-  <dd>Users that have not been tied to any member of our organization. Will have some abilities in the future beyond anonymous browsing such as posting comments and registering as an attendee to events.</dd>
-
-  <dt>Verified</dt>
-  <dd>For known people outside of our chapter. Will have the same abilities as an unverified account with added trust.</dd>
-
-  <dt>Member</dt>
-  <dd>For members of our chapter. The user will be able to create content (like events) and modify their own creations.</dd>
-
-  <dt>Officer</dt>
-  <dd>For current/former officers. These accounts will be trusted with <em>Administrative</em> abilities that the site offers. These accounts will have the power to modify content posted by other users.</dd>
-
-  <dt>Untrusted</dt>
-  <dd>For useless/malicious/unverifiable accounts that we can't tie to a person</dd>
-</dl>
+<% if current_user and current_user.id == @user.id %>
+<p><%= link_to "Change", edit_user_path(@user), :class => "btn" %></p>
+<% end %>
 
 
-<% if current_user.access_level >= 3 %>
+
+<% if current_user and current_user.access_level >= 3 %>
 <br><ul class="nav nav-list">
   <li class="divider"></li>
 </ul><br>
 
-<h2>New Account Verification<small> &nbsp; <a href="<%= users_path %>">View All Users</a></small></h2>
-<ul>
-  <% @needs_verification.each do |v| %>
-  <li>
-    <%= v.name %> (<a href="mailto:<%= v.email %>"><%= v.email %></a>) &nbsp; &nbsp;
-    <%= form_for v, :url => {:action => 'update'}, html: {class: "form-inline", style: "display:inline-block"} do |f| %>
-      <%= f.label :status %>
-      <%= f.select :status, options_for_select(['Unverified', 'Verified', 'Member', 'Officer', 'Untrusted']) %>
-      <%= hidden_field_tag :verify_id, v.id %>
-      <%= f.submit "Change" %>
-    <% end %>
-  </li>
-  <% end %>
-</ul>
-
-<% if @needs_verification.length < 1 %>
-No new accounts to verify
+<div class="text-center">
+	<p><strong><%= @needs_verification %></strong> account(s) need(s) Verification</p>
+	<a href="<%= users_path %>" class="btn btn-primary">View All Users</a>
+</div>
 <% end %>
 
-<% end %>

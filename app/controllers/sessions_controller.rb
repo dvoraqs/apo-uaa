@@ -12,8 +12,9 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       redirect_to root_path, :notice => 'Welcome back, ' + user.name + '!'
     else
-      flash.now[:alert] = 'That was an invalid username or password'
-      render login_path
+      flash.now[:alert] = 'That email and password combination does not exist in our records'
+      @page = @header = 'Log In'
+      render 'new'
     end
   end
 

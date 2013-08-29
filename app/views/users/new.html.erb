@@ -2,38 +2,32 @@
 
 <div class="row">
   <div class="span4 offset4">
+    <p><small>We will use your name and email to help us verify that your account belongs to a member of Alpha Zeta Eta or a known person.</small></p>
     
+    <% if @user.errors.any? %>
+    <div class="alert alert-block">
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+    <% end %>
 
     <%= form_for @user do |f| %>
-      <% if @user.errors.any? %>
-      <div id="error_explanation">
-        <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
-      </div>
-      <% end %>
+      <%= f.label :name, "Full Name:" %>
+      <%= f.text_field :name, :class => "input-block-level" %>
 
-      <p><small>We will use your name and email to help us verify that your account belongs to a member of Alpha Zeta Eta or a known person.</small></p>
+      <%= f.label :email %>
+      <%= f.text_field :email, :class => "input-block-level" %>
 
-      <div class="field">
-        <%= f.label :name, "Full Name:" %>
-        <%= f.text_field :name, :class => "input-block-level" %>
-      </div>
-      <div class="field">
-        <%= f.label :email %>
-        <%= f.text_field :email, :class => "input-block-level" %>
-      </div>
-      <div class="field">
-        <%= f.label :password %>
-        <%= f.password_field :password, :class => "input-block-level" %>
-      </div>
-      <div class="field">
-        <%= f.label :password_confirmation%>
-        <%= f.password_field :password_confirmation, :class => "input-block-level" %>
-      </div>
-      <div class="actions"><%= f.submit nil, :class => "btn btn-primary" %></div>
+      <%= f.label :password %>
+      <%= f.password_field :password, :class => "input-block-level" %>
+
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, :class => "input-block-level" %>
+
+      <%= f.submit nil, :class => "btn btn-primary" %>
     <% end %>
 
   </div>

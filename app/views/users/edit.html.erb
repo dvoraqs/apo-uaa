@@ -1,0 +1,26 @@
+<!-- edit.html.erb -->
+
+<div class="row">
+  <div class="span4 offset4">
+    <% if @user.errors.any? %>
+    <div class="alert alert-block">
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+    <% end %>
+
+    <%= form_for @user do |f| %>
+	    <%= f.label :name, "Full Name:" %>
+	    <%= f.text_field :name, :class => "input-block-level" %>
+
+	    <%= f.label :email %>
+	    <%= f.text_field :email, :class => "input-block-level" %>
+      
+      <%= f.submit 'Save Changes', :class => "btn btn-primary" %>
+    <% end %>
+
+  </div>
+</div>
