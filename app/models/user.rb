@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   end
 
   def access_level
-    levels = {'Officer' => 3, 'Member' => 2, 'Verified' => 1, 'Untrusted' => -1}
+    levels = {'Admin' => 4, 'Officer' => 3, 'Member' => 2, 'Verified' => 1, 'Untrusted' => -1}
     if levels.has_key?(self.status) then levels[self.status] else 0 end
   end
 end

@@ -16,6 +16,14 @@
       <%= f.label :title %><%= f.text_field :title, :class => "input-block-level" %>
       <div class="row">
         <div class="span3">
+          <%= f.label :location %><%= f.text_field :location, :class => "input-block-level" %>
+        </div>
+        <div class="span3">
+          <%= f.label :status %><%= f.select :status, ['Tentative', 'Confirmed', 'Cancelled'] %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span3">
           <%= f.label :start %><input id="event_start" name="event[start]" class="input-block-level" type="datetime-local" value="<%= if not @event.start.nil? then @event.start.strftime('%FT%R') else '' end %>" />
         </div>
         <div class="span3">
@@ -24,19 +32,10 @@
       </div>
       <div class="row">
         <div class="span3">
-          <%= f.label :location %><%= f.text_field :location, :class => "input-block-level" %>
+          <%= f.label :recurrence_rule, "Repeats" %><%= f.select :recurrence_rule, [['Never', nil],['Daily', 'DAILY'], ['Weekly', 'WEEKLY'], ['Monthly', 'MONTHLY'], ['Yearly', 'YEARLY']] %>
         </div>
         <div class="span3">
-          <%= f.label :status %><%= f.select :status, options_for_select(['Tentative', 'Confirmed', 'Cancelled']) %>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="span3">
-          <%= f.label :recurrence_rule, "Repeats" %><%= f.select :status, options_for_select([['Never', nil],['Daily', 'DAILY'], ['Weekly', 'WEEKLY'], ['Yearly', 'YEARLY']]) %>
-        </div>
-        <div class="span3">
-          <%= f.label :recurs_until, "Until" %><input id="event_recurs_until" name="event[recurs_until]" class="input-block-level" type="datetime-local" value="<%= if @event.recurs_until != nil then @event.reccurs_until.strftime('%FT%R') else '' end %>" %>
+          <%= f.label :recurs_until, "Until" %><input id="event_recurs_until" name="event[recurs_until]" class="input-block-level" type="datetime-local" value="<%= if @event.recurs_until != nil then @event.recurs_until.strftime('%FT%R') else '' end %>" %>
         </div>
       </div>
 

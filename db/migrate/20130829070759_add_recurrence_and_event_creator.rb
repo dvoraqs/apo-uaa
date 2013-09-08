@@ -4,6 +4,6 @@ class AddRecurrenceAndEventCreator < ActiveRecord::Migration
       t.string :recurrence_rule
       t.datetime :recurs_until
       t.belongs_to :user
-     end
+    end
   end
 end
