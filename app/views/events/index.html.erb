@@ -58,7 +58,7 @@
     next_event = if i < @events.length then @events[i+1] else nil end
 %>
 
-<% if prev_event == nil || prev_event.start_year != event.start_year %>
+<% if prev_event == nil || prev_event.start_as('year') != event.start_as('year') %>
 
 <!-- Begin Year -->
 <br><ul class="nav nav-list">
@@ -79,16 +79,16 @@
 
 <div class="row">
   <div class="span1 year">
-    <h2><%= event.start_year %></h2>
+    <h2><%= event.start_as('year') %></h2>
   </div>
   <div class="span11">
 <% end %>
 
-    <% if prev_event == nil or prev_event.start_year + prev_event.start_month_caps != event.start_year + event.start_month_caps %>
+    <% if prev_event == nil or prev_event.start_as('year') + prev_event.start_as('month caps') != event.start_as('year') + event.start_as('month caps') %>
     <!-- Begin Month -->
 
     
-    <% if prev_event != nil and prev_event.start_year == event.start_year %>
+    <% if prev_event != nil and prev_event.start_as('year') == event.start_as('year') %>
     <!-- Column Labels -->
     <ul class="nav nav-list">
       <li class="divider"></li>
@@ -109,23 +109,23 @@
 
     <div class="row">
       <div class="span1 month">
-        <h3><%= event.start_month_caps %></h3>
+        <h3><%= event.start_as('month caps') %></h3>
       </div>
       <div class="span10">
     <% end %>
 
-        <% if prev_event == nil || prev_event.start_year + prev_event.start_month_caps + prev_event.start_day != event.start_year + event.start_month_caps + event.start_day || prev_event.end_year + prev_event.end_month_caps + prev_event.end_day != event.end_year + event.end_month_caps + event.end_day %>
+        <% if prev_event == nil || prev_event.start_as('year') + prev_event.start_as('month caps') + prev_event.start_as('day') != event.start_as('year') + event.start_as('month caps') + event.start_as('day') || prev_event.end_as('year') + prev_event.end_as('month caps') + prev_event.end_as('day') != event.end_as('year') + event.end_as('month caps') + event.end_as('day') %>
         <!-- Begin Day -->
         <div class="row">
           <div class="span1 date">
             <div class="full-date"><%= event.full_date %></div>
             <h4>
-              <%= event.start_day %> <div class="day-of-week"><%= event.start_weekday_caps %></div>
+              <%= event.start_as('day') %> <div class="day-of-week"><%= event.start_as('weekday caps') %></div>
               <% if event.more_than_a_day %>
               <div class="end-date muted">
                 <small>to</small>
-                <%= event.end_day %> 
-                <div class="day-of-week"><%= event.end_weekday_caps %></div>
+                <%= event.end_as('day') %> 
+                <div class="day-of-week"><%= event.end_as('weekday caps') %></div>
               </div>
               <% end %>
             </h4>
@@ -134,7 +134,7 @@
         <% end %>
 
             <!-- Begin Event -->
-            <a href="<%= event_path(event) %>">
+            <a href="<%= if event.recurrence == nil then event_path(event) else event_path(event) + '?recurrence=' + event.recurrence.to_s end %>">
               <div class="row">
                 <div class="span4 title">
                   <h5><%= event.title %></h5>
@@ -158,19 +158,19 @@
             </a>
             <!-- End Event -->
 
-        <% if next_event.nil? || next_event.start_year + next_event.start_month_caps + next_event.start_day != event.start_year + event.start_month_caps + event.start_day || next_event.end_year + next_event.end_month_caps + next_event.end_day != event.end_year + event.end_month_caps + event.end_day %>
+        <% if next_event.nil? || next_event.start_as('year') + next_event.start_as('month caps') + next_event.start_as('day') != event.start_as('year') + event.start_as('month caps') + event.start_as('day') || next_event.end_as('year') + next_event.end_as('month caps') + next_event.end_as('day') != event.end_as('year') + event.end_as('month caps') + event.end_as('day') %>
           </div>
         </div>
         <!-- End Day -->
         <% end %>
 
-    <% if next_event.nil? || next_event.start_year + next_event.start_month_caps != event.start_year + event.start_month_caps %>
+    <% if next_event.nil? || next_event.start_as('year') + next_event.start_as('month caps') != event.start_as('year') + event.start_as('month caps') %>
       </div>
     </div>
     <!-- End Month -->
     <% end %>
 
-<% if next_event.nil? || next_event.start_year != event.start_year %>
+<% if next_event.nil? || next_event.start_as('year') != event.start_as('year') %>
   </div>
 </div>
 

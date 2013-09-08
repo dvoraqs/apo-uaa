@@ -17,7 +17,7 @@
         <td>
           <%= form_for v, :url => user_path(v), html: {class: "form-inline", style: "margin-bottom:0;"} do |f| %>
             <%= f.label :status %>
-            <%= f.select :status, options_for_select([['Unverified', nil], 'Verified', 'Member', 'Officer', 'Untrusted'], :class => "btn-mini") %>
+            <%= f.select :status, [['Unverified', nil], 'Verified', 'Member', 'Officer', 'Admin', 'Untrusted'], :class => "btn-mini" %>
             <%= f.hidden_field :user_id, :value => current_user.id %> 
             <%= f.submit "Change", :class => "btn btn-mini" %>
           <% end %>
@@ -86,7 +86,10 @@
       <dd>For members of our chapter. The user will be able to create content (like events) and modify their own creations.</dd>
 
       <dt>Officer</dt>
-      <dd>For current/former officers. These accounts will be trusted with <em>Administrative</em> abilities that the site offers. These accounts will have the power to modify content posted by other users.</dd>
+      <dd>For current officers. These accounts will be trusted most or all of the abilities that the site offers. These accounts will have the power to modify content posted by other users.</dd>
+
+      <dt>Admin</dt>
+      <dd>For non-officers working on the site itself. Same access as an officer.</dd>
 
       <dt>Untrusted</dt>
       <dd>For useless/malicious/unverifiable accounts that we can't tie to a person</dd>

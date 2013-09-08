@@ -8,41 +8,54 @@ class EventsController < ApplicationController
 
   def index
     # display a list of events
-    @page = 'Events'
-
-    time = if params['time'] == nil then 0 else params['time'].to_i end
     
     now = DateTime.now
-    range_start = now.advance(:months => time * 6)
-    range_end = now.advance(:months => (time + 1) * 6)
-    @range = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
-
-    if time >= 0
-      @header = "Upcoming Events"
-    else
-      @header = "Past Events"
-    end
-
-    @events = Event.order('start').where('end > ? and ? > start', range_start, range_end).all
+    time = if params['time'] == nil then 0 else params['time'].to_i end
+    
     first_event = Event.order('start').first
-    last_event = Event.order('end').last
-
+    range_start = now.advance(:months => time * 6)
     if first_event != nil && range_start > first_event.start || range_start > now
       @prev = time - 1
     else
       @prev = nil
     end
 
+    last_event = Event.order('end').last
+    range_end = now.advance(:months => (time + 1) * 6)
     if last_event != nil && range_end < last_event.end || range_end < now
       @next = time + 1
     else
       @next = nil
     end
+
+    @events = []
+    events = Event.where('? > start and (end > ? or recurs_until > ?)', range_end, range_start, range_start).all
+    events.each do |e|
+      
+      if e.recurrence_rule != nil and e.recurs_until != nil
+        recurrence = 1
+        until e.start_date > range_end or e.end_date > e.recurs_until or recurrence > 10
+          @events.push(e)
+          e = e.clone
+          e.set_recurrence recurrence
+          recurrence = recurrence + 1
+        end
+      else
+        @events.push(e)
+      end
+    end
+
+    @events = @events.sort_by {|e| e.start_date}
+    @page = 'Events'
+    @header = if time >= 0 then 'Upcoming Events' else 'Past Events' end
+    @range = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
+    
   end
 
   def show
     # display a specific event
     @page = @header = @event.title
+    @event.recurrence = if params['recurrence'] == nil then 0 else params['recurrence'].to_i end
   end
 
   def edit
@@ -92,7 +105,7 @@ class EventsController < ApplicationController
   end
 
   def set_nav
-    @nav = 'Events'
+    page_nav 'Events'
   end
 
   def get_event
@@ -100,7 +113,7 @@ class EventsController < ApplicationController
   end
 
   def check_auth
-    if current_user == nil || current_user.access_level < 1
+    if current_user == nil or current_user.access_level < 2 or current_user.access_level == 2 and @event != nil and current_user != @event.user
       redirect_to events_path, :alert => "Must be logged in with a verified Member/Officer account"
     end
   end
