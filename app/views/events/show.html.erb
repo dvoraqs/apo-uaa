@@ -4,7 +4,7 @@
     <p><strong>End:</strong> <%= @event.end_date %></p>
     <p><strong>Location:</strong> <%= @event.location %></p>
     <p><strong>Status:</strong> <%= @event.status %></p>
-    <p><strong>Creator:</strong> <%= if @event.user != nil then link_to @event.user.name, user_path(@event.user) else "" end %>
+    <p><strong>Creator:</strong> <%= if @event.user != nil then link_to @event.user.name, user_path(@event.user) else "" end %></p>
   </div>
   <div class="span9">
     <p class="lead"><%= @event.description %></p>

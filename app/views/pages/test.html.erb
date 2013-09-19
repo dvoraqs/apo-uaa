@@ -47,22 +47,22 @@
 
       <%
 
-      # new_event = Event.new
-      # new_event.google_id = e.id
-      # new_event.google_link = e.htmlLink
-      # new_event.title = e.summary
-      # new_event.start = if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end
-      # new_event.end = if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end
-      # new_event.location = e.location
-      # new_event.status = e.status
-      # new_event.description = e.description
+      new_event = Event.new
+      new_event.google_id = e.id
+      new_event.google_link = e.htmlLink
+      new_event.title = e.summary
+      new_event.start = if e.start['dateTime'] != nil then e.start['dateTime'] else e.start['date'] end
+      new_event.end = if e.end['dateTime'] != nil then e.end['dateTime'] else e.end['date'] end
+      new_event.location = e.location
+      new_event.status = e.status
+      new_event.description = e.description
 
-      # if e.recurrence.length > 0
-      #   new_event.recurrence = /(?<=FREQ=).+?(?=;|$)/.match(e.recurrence[0])
-      #   new_event.recurrence_id = e.recurrence_id
-      # end
+      if e.recurrence.length == 1
+        new_event.recurrence_rule = /(?<=FREQ=).+?(?=;|$)/.match(e.recurrence[0])
+        new_event.recurs_until = /(?<=UNTIL=).+?(?=;|$)/.match(e.recurrence[0])
+      end
 
-      # new_event.save
+      new_event.save
 
     end
 

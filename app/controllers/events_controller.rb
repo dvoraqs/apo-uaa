@@ -2,13 +2,12 @@
 
 class EventsController < ApplicationController
 
-  before_filter :set_nav
   before_filter :get_event, :only => [:show, :edit, :update, :destroy]
   before_filter :check_auth, :only => [:new, :create, :edit, :update, :destroy]
 
   def index
     # display a list of events
-    
+
     now = DateTime.now
     time = if params['time'] == nil then 0 else params['time'].to_i end
     
@@ -34,7 +33,13 @@ class EventsController < ApplicationController
       
       if e.recurrence_rule != nil and e.recurs_until != nil
         recurrence = 1
-        until e.start_date > range_end or e.end_date > e.recurs_until or recurrence > 10
+        until e.start_date >= range_start
+          # skip earlier dates if they come before the current range
+          e.set_recurrence recurrence
+          recurrence = recurrence + 1
+        end
+
+        until e.start_date > range_end or e.end_date > e.recurs_until or recurrence > 100
           @events.push(e)
           e = e.clone
           e.set_recurrence recurrence
@@ -46,27 +51,25 @@ class EventsController < ApplicationController
     end
 
     @events = @events.sort_by {|e| e.start_date}
-    @page = 'Events'
-    @header = if time >= 0 then 'Upcoming Events' else 'Past Events' end
     @range = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
+    set_page 'Events', 'Events', if time >= 0 then 'Upcoming Events' else 'Past Events' end
     
   end
 
   def show
     # display a specific event
-    @page = @header = @event.title
+    set_page 'Events', @event.title, @event.title
     @event.recurrence = if params['recurrence'] == nil then 0 else params['recurrence'].to_i end
   end
 
   def edit
     # return an HTML form for editing an event
-    @page = 'Edit ' + @event.title
-    @header = @event.title
+    set_page('Events', 'Edit ' + @event.title, @event.title)
   end
 
   def new
     # return an HTML form for creating a new event
-    @page = @header = 'New Event'
+    set_page 'Events', 'New Event', 'New Event'
     @event = Event.new
   end
 
@@ -78,7 +81,7 @@ class EventsController < ApplicationController
       redirect_to event_path(@event)
     else
       flash.now[:alert] = 'There were problems creating the event'
-      @page = @header = 'New Event'
+      set_page 'Events', 'New Event', 'New Event'
       render 'new'
     end
   end
@@ -90,8 +93,7 @@ class EventsController < ApplicationController
       redirect_to event_path(@event)
     else
       flash.now[:alert] = 'There were problems updating event ' + @event.title
-      @page = 'Edit ' + @event.title
-      @header = @event.title
+      set_page 'Events', 'Edit ' + @event.title, @event.title
       render 'edit'
     end
   end
@@ -102,10 +104,6 @@ class EventsController < ApplicationController
       flash[:notice] = 'Event deleted successfully'
       redirect_to events_path
     end
-  end
-
-  def set_nav
-    page_nav 'Events'
   end
 
   def get_event

@@ -10,6 +10,7 @@ Technology Overview
 - Openshift: 'Platform as a Service' Cloud hosting service that hosts our website
 - Bootstrap: Web UI framework used to make our website pretty
 
+
 First Time Setup
 ----------------
 
@@ -40,6 +41,7 @@ Now you're ready to do work on the site!
 
 Test the site on a local server by running `rails server` and going to 'http://localhost:3000/' in your browser.
 Apply changes to the server by using Git to make a commit of local changes and then push the commit to the server.
+
 
 Troubleshooting Tips
 --------------------

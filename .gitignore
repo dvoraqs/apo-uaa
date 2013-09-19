@@ -14,3 +14,9 @@
 /log/*.log
 /tmp
 .project
+
+# ignore ssh keyfiles
+*-privatekey.p12
+
+# ignore schema
+/db/schema.rb

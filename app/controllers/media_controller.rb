@@ -3,6 +3,6 @@
 class MediaController < ApplicationController
 
   def index
-    @page = @nav = @header = 'Media'
+    set_page 'Media', 'Media', 'Media'
   end
 end

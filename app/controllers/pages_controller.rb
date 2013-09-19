@@ -5,50 +5,39 @@
 class PagesController < ApplicationController
 
   def index
-    @page = @nav = 'Home'
-    @header = nil
+    set_page 'Home', 'Home', nil
   end
 
   def join
-    @page = @nav = 'How to Join'
-    @header = 'How to Join our Chapter'
+    set_page 'How to Join', 'How to Join', 'How to Join our Chapter'
   end
 
   def pledge_signup
-    @nav = 'How to Join'
-    @page = 'Sign up as a potential pledge'
-    @header = nil
+    set_page 'How to Join', 'Sign up as a potential pledge', nil
   end
 
   def about
-    @page = @nav = 'About Us'
-    @header = 'About our Organization'
+    set_page 'About Us', 'About Us', 'About our Organization'
   end
 
   def contact
-    @page = @header = @nav = 'Contact Us'
+    set_page 'Contact Us', 'Contact Us', 'Contact Us'
   end
 
   def conference
-    @page = @header = '2013 Section 8 Conference'
-    @nav = 'Events'
+    set_page 'Events', '2013 Section 8 Conference', '2013 Section 8 Conference'
   end
 
   def conference_register
-    @page = 'Register for the Conference'
-    @header = nil
-    @nav = 'Events'
+    set_page 'Events', 'Register for the Conference', nil
   end
 
   def bylaws
-    @page = "Chapter Bylaws"
-    @header = "Alpha Zeta Eta Chapter Bylaws"
-    @nav = 'Media'
+    set_page 'Media', 'Chapter Bylaws', 'Alpha Zeta Eta Chapter Bylaws'
   end
 
   def test
     # http_basic_authenticate_with :name => "frodo", :password => "thering"
-    @nav = 'Home'
-    @page = @header = 'Test Page'
+    set_page 'Home', 'Test Page', 'Test Page'
   end
 end
