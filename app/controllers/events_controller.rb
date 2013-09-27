@@ -53,7 +53,6 @@ class EventsController < ApplicationController
     @events = @events.sort_by {|e| e.start_date}
     @range = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
     set_page 'Events', 'Events', if time >= 0 then 'Upcoming Events' else 'Past Events' end
-    
   end
 
   def show
