@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   # possibly re-enable when Openshift supports custom SSL certificates
 
   def index
-    set_page nil, 'Users List', 'Users List'
+    set_page nil, 'Users List', 'Users List', nil
     @users = User.where('status IS NOT NULL').all
     @needs_verification = User.where('status IS NULL').all
 
@@ -14,20 +14,20 @@ class UsersController < ApplicationController
   end
 
   def new
-    set_page nil, 'New User', 'New User'
+    set_page nil, 'New User', 'New User', nil
     @user = User.new
   end
 
   def edit
     # return an HTML form for editing a user
     @user = User.find(params[:id])
-    set_page nil, 'Edit ' + @user.name, @user.name
+    set_page nil, 'Edit ' + @user.name, @user.name, nil
   end
 
   def show
     # display a specific user
     @user = User.find(params[:id])
-    set_page 'User', @user.name, @user.name
+    set_page 'User', @user.name, @user.name, nil
 
     if @user.access_level >= 3
       @needs_verification = User.where('status IS NULL').all.length
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
       redirect_to root_path, :notice => 'You are now registered. Welcome ' + @user.name + '!'
     else
       flash.now[:alert] = 'There was a problem creating the user'
-      set_page nil, 'New User', 'New User'
+      set_page nil, 'New User', 'New User', nil
       render 'new'
     end
   end

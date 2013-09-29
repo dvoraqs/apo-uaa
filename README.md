@@ -36,6 +36,9 @@ First Time Setup
 	- Command: `git clone [git repository address]`
 - Install the Ruby Gems used on the site
 	- Command: `bundle install`
+- Set up the database
+  - If the database is clean, initialize with the database schema with the command: `rake db:schema:load`
+  - Remember with each change to the schema, you'll need use migration to load the new design: `rake db:migrate`
 
 Now you're ready to do work on the site!
 
@@ -49,3 +52,5 @@ Troubleshooting Tips
 If the server does not start again after pushing changes, restart the server, which is possible on the openshift website, the RHC command-line tool, or SSH-ing into the server.
 
 In Ubuntu, installing nodejs (command: `sudo apt-get install nodejs`) solved a problem with javascript engines or something when trying to start the local server
+
+If there are errors on pages that interact with the database, the database may be out of date. Use migration to change the schema to reflect the latest version (`rake db:migrate`)

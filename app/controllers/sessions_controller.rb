@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   # possibly re-enable when Openshift supports custom SSL certificates
 
   def new
-    @page = @header = 'Log In'
+    set_page nil, 'Log In', 'Log In', nil
   end
 
   def create
@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       redirect_to root_path, :notice => 'Welcome back, ' + user.name + '!'
     else
       flash.now[:alert] = 'That email and password combination does not exist in our records'
-      @page = @header = 'Log In'
+      set_page nil, 'Log In', 'Log In', nil
       render 'new'
     end
   end

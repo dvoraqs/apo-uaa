@@ -52,23 +52,23 @@ class EventsController < ApplicationController
 
     @events = @events.sort_by {|e| e.start_date}
     @range = range_start.strftime('%b %Y') + ' to ' + range_end.strftime('%b %Y')
-    set_page 'Events', 'Events', if time >= 0 then 'Upcoming Events' else 'Past Events' end
+    set_page 'Events', 'Events', if time >= 0 then 'Upcoming Events' else 'Past Events' end, nil
   end
 
   def show
     # display a specific event
-    set_page 'Events', @event.title, @event.title
+    set_page 'Events', @event.title, @event.title, nil
     @event.recurrence = if params['recurrence'] == nil then 0 else params['recurrence'].to_i end
   end
 
   def edit
     # return an HTML form for editing an event
-    set_page('Events', 'Edit ' + @event.title, @event.title)
+    set_page 'Events', 'Edit ' + @event.title, @event.title, nil
   end
 
   def new
     # return an HTML form for creating a new event
-    set_page 'Events', 'New Event', 'New Event'
+    set_page 'Events', 'New Event', 'New Event', nil
     @event = Event.new
   end
 
@@ -80,7 +80,7 @@ class EventsController < ApplicationController
       redirect_to event_path(@event)
     else
       flash.now[:alert] = 'There were problems creating the event'
-      set_page 'Events', 'New Event', 'New Event'
+      set_page 'Events', 'New Event', 'New Event', nil
       render 'new'
     end
   end
@@ -92,7 +92,7 @@ class EventsController < ApplicationController
       redirect_to event_path(@event)
     else
       flash.now[:alert] = 'There were problems updating event ' + @event.title
-      set_page 'Events', 'Edit ' + @event.title, @event.title
+      set_page 'Events', 'Edit ' + @event.title, @event.title, nil
       render 'edit'
     end
   end
